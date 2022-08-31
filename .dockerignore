@@ -1,0 +1,8 @@
+.mtbLaunchConfigs/
+.settings/
+deps/
+edge-impulse-sdk/
+firmware-sdk/
+libs/
+misc/
+src/

@@ -1,0 +1,5 @@
+docs
+$(SEARCH_BMI160_driver)/examples
+$(SEARCH_BMM150-Sensor-API)/examples
+../BMI160_driver/examples
+../BMM150-Sensor-API/examples
