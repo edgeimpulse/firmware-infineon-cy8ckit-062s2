@@ -292,7 +292,8 @@ void EiDevicePSoC62::set_default_data_output_baudrate()
 
 bool EiDevicePSoC62::start_sample_thread(void (*sample_read_cb)(void), float sample_interval_ms)
 {
-    bool result;
+    cy_rslt_t result;
+    bool ret = false;
 
     /* Assign the ISR to execute on timer interrupt */
     sample_timer_cfg.period = sample_interval_ms * 1000;
@@ -300,13 +301,14 @@ bool EiDevicePSoC62::start_sample_thread(void (*sample_read_cb)(void), float sam
     cyhal_timer_register_callback(&sample_timer, (timer_callback_t)sample_read_cb, nullptr);
     result = cyhal_timer_start(&sample_timer);
     if (result == CY_RSLT_SUCCESS) {
+        ret = true;
         this->set_state(eiStateSampling);
     }
     else {
         ei_printf("ERR: Failed to start sample timer.\n");
     }
 
-    return result;
+    return ret;
 }
 
 bool EiDevicePSoC62::stop_sample_thread(void)

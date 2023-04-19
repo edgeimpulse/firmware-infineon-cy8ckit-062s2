@@ -4,12 +4,11 @@
 * \brief
 * Common header file to be included by the drivers.
 *
-* \note
-* Generator version: 1.6.0.457
-*
 ********************************************************************************
 * \copyright
-* Copyright 2016-2021 Cypress Semiconductor Corporation
+* (c) (2016-2022), Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
+*
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -132,8 +131,8 @@
     #include "cy8c6347bzi_bld54.h"
 #elif defined (CY8C6247BFI_D54)
     #include "cy8c6247bfi_d54.h"
-#elif defined (CYBLE_416045_02)
-    #include "cyble_416045_02.h"
+#elif defined (CYBLE_416045_02_device)
+    #include "cyble_416045_02_device.h"
 #elif defined (CY8C6347FMI_BUD53)
     #include "cy8c6347fmi_bud53.h"
 #elif defined (CY8C6347FMI_BUD13)
@@ -164,6 +163,8 @@
     #include "cyb0644abzi_s2d44.h"
 #elif defined (CYS0644ABZI_S2D44)
     #include "cys0644abzi_s2d44.h"
+#elif defined (CYS0644AFNI_S2D43)
+    #include "cys0644afni_s2d43.h"
 #elif defined (CY8C624ABZI_S2D44A0)
     #include "cy8c624abzi_s2d44a0.h"
 #elif defined (CY8C624ABZI_S2D44)
@@ -346,8 +347,22 @@
     #include "cy8c6144azi_s4f12.h"
 #elif defined (CY8C6144LQI_S4F12)
     #include "cy8c6144lqi_s4f12.h"
-#elif defined (CY_DEVICE_UUT)
-    #include "cy_device_uut.h"
+#elif defined (CY8C6244AZQ_S4D92)
+    #include "cy8c6244azq_s4d92.h"
+#elif defined (CY8C6244LQQ_S4D92)
+    #include "cy8c6244lqq_s4d92.h"
+#elif defined (CY8C6244AZQ_S4D93)
+    #include "cy8c6244azq_s4d93.h"
+#elif defined (CY8C6144AZQ_S4F92)
+    #include "cy8c6144azq_s4f92.h"
+#elif defined (CY8C6144LQQ_S4F92)
+    #include "cy8c6144lqq_s4f92.h"
+#elif defined (CY8C6144AZQ_S4F93)
+    #include "cy8c6144azq_s4f93.h"
+#elif defined (CY8C4588AZQ_H685)
+    #include "cy8c4588azq_h685.h"
+#elif defined (CY8C4588AZQ_H686)
+    #include "cy8c4588azq_h686.h"
 #else
     #include "cy_device_common.h"
 #endif

@@ -1,6 +1,6 @@
 /***************************************************************************//**
 * \file cy_dma.h
-* \version 2.40
+* \version 2.60
 *
 * \brief
 * The header file of the DMA driver.
@@ -74,6 +74,8 @@
 * in a typical user application:
 * \image html dma.png
 *
+* <B>NOTE:</B> DMA will read descriptors from SRAM memory. To run DMA on devices with Core CM7,
+* D cache needs to be cleaned before DMA transfer and should be invalidated after DMA transfer. \n
 * <B>NOTE:</B> Even if a DMA channel is enabled, it is not operational until
 * the DMA block is enabled using function \ref Cy_DMA_Enable.\n
 * <B>NOTE:</B> If the DMA descriptor is configured to generate an interrupt,
@@ -82,6 +84,15 @@
 *
 * For example:
 * \snippet dma/snippet/main.c snippet_Cy_DMA_Enable
+*
+* CM7 cores in CAT1C devices support Data Cache. Data Cache line is 32 bytes.
+* User needs to make sure that the source and destination buffer pointers and the config structure pointers passed
+* to the following functions points to 32 byte aligned data.
+* Cy_DMA_Channel_SetDescriptor, Cy_DMA_Descriptor_SetNextDescriptor, Cy_DMA_Descriptor_SetSrcAddress, Cy_DMA_Descriptor_SetDstAddress.
+* User can use CY_ALIGN(32) macro for 32 byte alignment.
+* User needs to clean the following data elements from the cache and invalidate before accessing them.
+* source and destination buffers and descriptor structure.
+* * \snippet dma/snippet/main.c snippet_Cy_DMA_Cache_usage
 *
 * \section group_dma_more_information More Information.
 * See: the DMA chapter of the device technical reference manual (TRM);
@@ -92,6 +103,21 @@
 *
 * <table class="doxtable">
 *   <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
+*   <tr>
+*     <td>2.60</td>
+*     <td>Fixed MISRA 2012 violations and minor documentation update.</td>
+*     <td>MISRA 2012 compliance.</td>
+*   </tr>
+*   <tr>
+*     <td>2.50</td>
+*     <td>Fixed MISRA 2012 violations.</td>
+*     <td>MISRA 2012 compliance.</td>
+*   </tr>
+*   <tr>
+*     <td>2.40.1</td>
+*     <td>Minor documentation updates.</td>
+*     <td>Update to configure DMA on core CM7.</td>
+*   </tr>
 *   <tr>
 *     <td>2.40</td>
 *     <td>Minor Bug fixes.</td>
@@ -171,7 +197,7 @@
 
 #include "cy_device.h"
 
-#if defined (CY_IP_M4CPUSS_DMA) || defined (CY_IP_MXDW)
+#if defined (CY_IP_M4CPUSS_DMA) || defined (CY_IP_MXDW) || defined (CY_IP_M7CPUSS_DMA)
 
 #include "cy_syslib.h"
 #include <stdint.h>
@@ -198,7 +224,7 @@ CY_MISRA_DEVIATE_BLOCK_START('MISRA C-2012 Rule 10.8', 15, \
 #define CY_DMA_DRV_VERSION_MAJOR       2
 
 /** The driver minor version */
-#define CY_DMA_DRV_VERSION_MINOR       40
+#define CY_DMA_DRV_VERSION_MINOR       60
 
 /** The DMA driver identifier */
 #define CY_DMA_ID                      (CY_PDL_DRV_ID(0x13U))
@@ -700,6 +726,7 @@ __STATIC_INLINE void * Cy_DMA_GetActiveDstAddress(DW_Type const * base)
 *
 * \param srcAddress
 * The source address value for the descriptor.
+* For CAT1C devices this data pointer needs to point to 32 byte aligned data.
 *
 * \funcusage
 * \snippet dma/snippet/main.c snippet_Cy_DMA_Descriptor_SetterFunctions
@@ -744,6 +771,7 @@ __STATIC_INLINE void * Cy_DMA_Descriptor_GetSrcAddress(cy_stc_dma_descriptor_t c
 *
 * \param dstAddress
 * The destination address value for the descriptor.
+* For CAT1C devices this data pointer needs to point to 32 byte aligned data.
 *
 * \funcusage
 * \snippet dma/snippet/main.c snippet_Cy_DMA_Descriptor_SetterFunctions
@@ -1499,6 +1527,7 @@ __STATIC_INLINE int32_t Cy_DMA_Descriptor_GetYloopDstIncrement(cy_stc_dma_descri
 *
 * \param descriptor
 * This is the descriptor to be associated with the channel.
+* For CAT1C devices this pointer needs to point to 32 byte aligned structure.
 *
 * \funcusage
 * \snippet dma/snippet/main.c snippet_Cy_DMA_Enable

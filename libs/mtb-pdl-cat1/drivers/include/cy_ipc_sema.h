@@ -1,13 +1,14 @@
 /***************************************************************************//**
 * \file cy_ipc_sema.h
-* \version 1.60
+* \version 1.80
 *
 * \brief
 * Header file for IPC SEM functions
 *
 ********************************************************************************
 * \copyright
-* Copyright 2016-2020 Cypress Semiconductor Corporation
+* Copyright (c) (2020-2022), Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +33,7 @@
 
 #include "cy_device.h"
 
-#if defined (CY_IP_M4CPUSS)
+#if defined (CY_IP_M4CPUSS) || defined (CY_IP_M7CPUSS)
 
 #include "cy_ipc_drv.h"
 #include <stdbool.h>
@@ -46,7 +47,7 @@
 * Include cy_ipc_sema.h. Alternatively include cy_pdl.h
 * to get access to all functions and declarations in the PDL.
 *
-* By default there are 128 semaphores provided, although the user may modify
+* By default, there are 128 semaphores provided, although the user may modify
 * the default value to any number, limited only by SRAM.
 *
 *     \defgroup group_ipc_sema_macros Macros
@@ -140,7 +141,7 @@ uint32_t Cy_IPC_Sema_GetMaxSems(void);
 
 /** \} group_ipc_sema_functions */
 
-#endif /* CY_IP_M4CPUSS */
+#endif /* CY_IP_M4CPUSS  || CY_IP_M7CPUSS*/
 
 #endif /* CY_IPC_SEMA_H  */
 

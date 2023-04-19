@@ -1,13 +1,13 @@
 /***************************************************************************//**
 * \file cy_tcpwm_quaddec.h
-* \version 1.30
+* \version 1.40
 *
 * \brief
 * The header file of the TCPWM Quadrature Decoder driver.
 *
 ********************************************************************************
 * \copyright
-* Copyright 2016-2020 Cypress Semiconductor Corporation
+* Copyright 2016-2021 Cypress Semiconductor Corporation
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,8 +91,6 @@ extern "C" {
 * The clock source must be connected to proper working.
 * Any of the peripheral clock dividers could be used. Use the
 * \ref group_sysclk driver API to do that.
-*
-* \snippet tcpwm/quaddec/snippet/main.c snippet_Cy_TCPWM_QuadDec_Clock
 *
 * \subsection group_tcpwm_quaddec_enable Enable Quadrature Decoder
 * Quadrature has to be enabled before starting
@@ -523,7 +521,7 @@ __STATIC_INLINE uint32_t Cy_TCPWM_QuadDec_GetCompare0BufVal(TCPWM_Type const  *b
 * Function Name: Cy_TCPWM_QuadDec_EnableCompare0Swap
 ****************************************************************************//**
 *
-* Enables the comparison swap of compare 0 and compareBuf 0 when the comparision
+* Enables the comparison swap of compare 0 and compareBuf 0 when the comparison
 * value is true
 *
 * \param base
@@ -739,7 +737,7 @@ __STATIC_INLINE uint32_t Cy_TCPWM_QuadDec_GetCapture1BufVal (TCPWM_Type const *b
 * Function Name: Cy_TCPWM_QuadDec_EnableCompare1Swap
 ****************************************************************************//**
 *
-* Enables the comparison swap of compare 1 and compareBuf 1 when the comparision
+* Enables the comparison swap of compare 1 and compareBuf 1 when the comparison
 * value is true
 *
 * \param base

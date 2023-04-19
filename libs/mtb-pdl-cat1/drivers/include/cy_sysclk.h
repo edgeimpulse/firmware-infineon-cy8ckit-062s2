@@ -1,12 +1,13 @@
 /***************************************************************************//**
 * \file cy_sysclk.h
-* \version 3.30
+* \version 3.50
 *
 * Provides an API declaration of the sysclk driver.
 *
 ********************************************************************************
 * \copyright
-* Copyright 2016-2021 Cypress Semiconductor Corporation
+* Copyright (c) (2016-2022), Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,9 +44,8 @@
 * clock system.
 *
 * The PDL defines clock system capabilities in:\n
-* devices/include/\<series\>_config.h. (E.g.
-* devices/include/psoc6_01_config.h).
-* User-configurable clock speeds are defined in the file system_<series>.h.
+* devices/COMPONENT_CAT1\<subcategory\>/include/\<series\>_config.h. (E.g.
+* devices/COMPONENT_CAT1A/include/psoc6_01_config.h).
 *
 * As an illustration of the clocking system, the following diagram shows the
 * PSoC 63 series clock tree. The actual tree may vary depending on the device series.
@@ -78,6 +78,85 @@
 * \section group_sysclk_changelog Changelog
 * <table class="doxtable">
 *   <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
+*   <tr>
+*     <td>3.50</td>
+*     <td>
+*         Bug fixes and few new APIs addition.<br>Newly added APIs:
+*         \n Cy_SysClk_PllGetFrequency() for CAT1A,CAT1C and CAT1D devices,
+*         \n Cy_SysClk_Pll200MGetFrequency() for CAT1C devices,
+*         \n Cy_SysClk_Pll400MGetFrequency() for CAT1C devices,
+*         \n Cy_SysClk_ImoEnable() for CAT1D devices,
+*         \n Cy_SysClk_ImoDisable() for CAT1D devices,
+*         \n Cy_SysClk_ImoIsEnabled() for CAT1D devices,
+*         \n Cy_SysClk_ImoDeepsleepEnable() for CAT1D devices,
+*         \n Cy_SysClk_ImoIsDeepsleepEnabled() for CAT1D devices,
+*         \n Cy_SysClk_ImoDeepsleepDisable() for CAT1D devices,
+*         \n Cy_SysClk_ClkFastSrcGetDivider() for CAT1C devices,
+*         \n Cy_SysClk_ClkFastSrcSetDivider() for CAT1C devices,
+*         \n Cy_SysClk_ClkFastSrcGetFrequency() for CAT1C devices,
+*     </td>
+*     <td>Bug fixes and new devices support.</td>
+*   </tr>
+*   <tr>
+*     <td rowspan="3">3.40</td>
+*     <td>
+*         Added CAT1C and CAT1D devices support.
+*     </td>
+*     <td>Support for new devices.</td>
+*   </tr>
+*   <tr>
+*     <td>New API's for PLL400M and PLL200M.</td>
+*     <td>To handle the new PLL's for CAT1C devices.</td>
+*   </tr>
+*   <tr>
+*     <td>New API's Added
+*         * Cy_SysClk_Pll200MConfigure()
+*         * Cy_SysClk_Pll200MManualConfigure()
+*         * Cy_SysClk_Pll200MGetConfiguration()
+*         * Cy_SysClk_Pll200MEnable()
+*         * Cy_SysClk_Pll200MIsEnabled()
+*         * Cy_SysClk_Pll200MLocked()
+*         * Cy_SysClk_Pll200MLostLock()
+*         * Cy_SysClk_Pll200MDisable()
+*         * Cy_SysClk_Pll400MConfigure()
+*         * Cy_SysClk_Pll400MManualConfigure()
+*         * Cy_SysClk_Pll400MGetConfiguration()
+*         * Cy_SysClk_Pll400MEnable()
+*         * Cy_SysClk_Pll400MIsEnabled()
+*         * Cy_SysClk_Pll400MLocked()
+*         * Cy_SysClk_Pll400MLostLock()
+*         * Cy_SysClk_Pll200MDisable()
+*         * Cy_SysClk_IhoDeepsleepEnable()
+*         * Cy_SysClk_IhoIsDeepsleepEnabled()
+*         * Cy_SysClk_IhoDeepsleepDisable()
+*         * Cy_SysClk_IloSrcEnable()
+*         * Cy_SysClk_IloSrcIsEnabled()
+*         * Cy_SysClk_IloSrcDisable()
+*         * Cy_SysClk_IloSrcHibernateOn()
+*         * Cy_SysClk_PiloBackupEnable()
+*         * Cy_SysClk_PiloBackupDisable()
+*         * Cy_SysClk_PiloTcscEnable()
+*         * Cy_SysClk_PiloTcscDisable()
+*         * Cy_SysClk_AltHfEnable()
+*         * Cy_SysClk_IsAltHfEnabled()
+*         * Cy_SysClk_IloSetTrim()
+*         * Cy_SysClk_IloGetTrim()
+*         * Cy_SysClk_ClkMfSetSource()
+*         * Cy_SysClk_ClkMfGetSource()
+*         * Cy_SysClk_ClkHfDirectSel()
+*         * Cy_SysClk_IsClkHfDirectSelEnabled()
+*         * Cy_SysClk_PeriGroupGetSlaveCtl()
+*         * Cy_SysClk_IsPeriGroupSlaveCtlSet()
+*         * Cy_SysClk_PeriPclkGetFrequency()
+*         * Cy_SysClk_PeriPclkGetDividerEnabled()
+*         * Cy_Sysclk_PeriPclkGetClkHfNum()
+*         * Cy_SysClk_ClkMemSetDivider()
+*         * Cy_SysClk_ClkMemGetDivider()
+*         * Cy_SysClk_ClkMemGetFrequency()
+*
+*     </td>
+*     <td>New API's to handle CAT1B, CAT1C and CAT1D devices.</td>
+*   </tr>
 *   <tr>
 *     <td rowspan="3">3.30</td>
 *     <td>
@@ -340,7 +419,7 @@
 * \}
 * \defgroup group_sysclk_ext             External Clock Source (EXTCLK)
 * \{
-*   The External Clock Source (EXTCLK) is a clock source routed into PSoC
+*   The External Clock Source (EXTCLK) is a clock source routed into SOC
 *   through a GPIO pin. The EXTCLK is a source clock that can be used to
 *   source one or more clock paths (Refer to \ref group_sysclk_path_src).
 *   These clock paths can then source the processors and peripherals in
@@ -349,7 +428,7 @@
 *   The EXTCLK relies on the presence of an external clock signal applied
 *   to the GPIO pin. The pin must be configured to operate in Digital
 *   High-Z drive mode with input buffer on and HSIOM connection
-*   set to HSIOM_SEL_ACT_4 (P0_0_SRSS_EXT_CLK, P0_5_SRSS_EXT_CLK).
+*   set to HSIOM_SEL_ACT_4.
 *
 *   \defgroup group_sysclk_ext_funcs       Functions
 * \}
@@ -367,6 +446,7 @@
 *   drive mode with HSIOM connection set to GPIO control (HSIOM_SEL_GPIO).
 *
 *   \defgroup group_sysclk_eco_funcs       Functions
+*   \defgroup group_sysclk_eco_enums     Enumerated Types
 * \}
 * \defgroup group_sysclk_path_src           Clock Path Source
 * \{
@@ -723,14 +803,42 @@
 *   \defgroup group_sysclk_clk_bak_funcs   Functions
 *   \defgroup group_sysclk_clk_bak_enums   Enumerated Types
 * \}
-* \defgroup group_sysclk_mf_funcs         Medium Frequency Domain Clock
+* \defgroup group_sysclk_mf         Medium Frequency Domain Clock
 * \{
 *   The Medium Frequency Domain Clock is present only in SRSS_ver1_3.
 *   Consists of MFO - the Medium Frequency Oscillator,
 *   and CLK_MF - the Medium Frequency Clock divider.
 *   This clock chain is designed to source the LCD block
 *   in Deep Sleep mode, see \ref cy_en_seglcd_lsclk_t.
+*
+*   \defgroup group_sysclk_mf_funcs   Functions
+*   \defgroup group_sysclk_clk_mf_enums    Enumerated Types
 * \}
+* \defgroup group_sysclk_iho         Internal High Frequency(IHO) Clock
+* \{
+*   The IHO Clock is Internal High-speed Oscillator, which is present in CAT1B(48MHz)
+*   and CAT1D(50MHz) devices.
+*
+*   \defgroup group_sysclk_iho_funcs   Functions
+*   \defgroup group_sysclk_clk_iho_enums    Enumerated Types
+* \}
+* \defgroup group_sysclk_imo         Internal Main Oscillator(IMO) Clock
+* \{
+*   The IMO Clock is Internal Main Oscillator, which is present in CAT1A/CAT1B/CAT1C and
+*   CAT1D devices, where as it is it is 8MHz in CAT1A/CAT1B/CAT1C, and CAT1D supports
+*   two instances of IMO i.e. 2MHz frequency (deep sleep capable) and separate
+*   instance with 4Mhz for LPPASS.
+*
+*   \defgroup group_sysclk_imo_funcs   Functions
+*   \defgroup group_sysclk_clk_imo_enums    Enumerated Types
+* \}
+* \defgroup group_sysclk_clk_mem         Mem Clock
+* \{
+*   Clock for the Memories
+
+*   \defgroup group_sysclk_clk_mem_funcs   Functions
+* \}
+
 */
 
 #if !defined (CY_SYSCLK_H)
@@ -738,7 +846,7 @@
 
 #include "cy_device.h"
 
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SRSS) || defined (CY_IP_MXS40SSRSS)
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SRSS) || defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS)
 #include <stdbool.h>
 #include "cy_syslib.h"
 #include "cy_syspm.h"
@@ -759,7 +867,7 @@ extern "C" {
 /** Driver major version */
 #define  CY_SYSCLK_DRV_VERSION_MAJOR   3
 /** Driver minor version */
-#define  CY_SYSCLK_DRV_VERSION_MINOR   20
+#define  CY_SYSCLK_DRV_VERSION_MINOR   50
 /** Sysclk driver identifier */
 #define CY_SYSCLK_ID   CY_PDL_DRV_ID(0x12U)
 
@@ -779,20 +887,63 @@ extern "C" {
 /** CY_SYSCLK_PILO_TRIM_STEP is the default PILO TRIM Step value */
 #define CY_SYSCLK_PILO_TRIM_STEP  (5UL) /* Default PILO TRIM Step size */
 
-#if defined (CY_IP_MXS28SRSS)
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS)
 /**
 * \note
 * This macro is available for CAT1B devices.
 **/
 /** IHO clock frequency */
 #define CY_SYSCLK_IHO_FREQ  (48000000UL) /* Hz */
+
+#elif defined (CY_IP_MXS22SRSS)
 /**
 * \note
-* This macro is available for CAT1B devices.
+* This macro is available for CAT1D devices.
+**/
+/** IHO clock frequency */
+#define CY_SYSCLK_IHO_FREQ  (50000000UL) /* Hz */
+#endif /* CY_IP_MXS40SSRSS,CY_IP_MXS28SRSS*/
+
+
+#if defined (CY_IP_MXS40SRSS)
+/**
+* \note
+* This macro is available for CAT1A devices.
 **/
 /** ECO clock frequency */
 #define CY_SYSCLK_ECO_FREQ  (4000000UL) /* Hz */
-#endif /* CY_IP_MXS28SRSS */
+#endif /* CY_IP_MXS40SRSS */
+
+
+#if defined (CY_IP_MXS40SSRSS)|| defined (CY_IP_MXS22SRSS)
+/** FLL BYPASS configure Delay , As per SAS
+* "When changing BYPASS_SEL, do not turn off the reference clock
+* or CCO clock for ten cycles (whichever is slower)"
+* Slower if IMO, so delay = (10 * 1/(IMO freq in Mhz))  = 1.25 micro seconds,
+* approximated to 2 micro second
+ **/
+#define CY_SYSCLK_BYPASS_CONFIGURE_DELAY  (2UL) /* micro seconds */
+
+/** FLL Disable Timeout value
+**/
+#define CY_SYSCLK_FLL_DISABLE_TIMEOUT     (100UL) /* micro seconds */
+
+#else
+
+/** FLL BYPASS configure Delay , As per SAS
+* "When changing BYPASS_SEL, do not turn off the reference clock
+* or CCO clock for seven cycles (whichever is slower)"
+* Slower if IMO, so delay = (7 * 1/(IMO freq in Mhz))  = 0.875 micro seconds,
+* approximated to 1 micro second
+**/
+#define CY_SYSCLK_BYPASS_CONFIGURE_DELAY  (1UL) /* micro seconds */
+
+/** FLL Disable Timeout value
+**/
+#define CY_SYSCLK_FLL_DISABLE_TIMEOUT     (100UL) /* micro seconds */
+
+#endif /* defined (CY_IP_MXS40SSRSS)|| defined (CY_IP_MXS22SRSS) */
+
 
 /** \} group_sysclk_macros */
 
@@ -804,10 +955,11 @@ extern "C" {
 /** Defines general-purpose function return values */
 typedef enum
 {
-    CY_SYSCLK_SUCCESS       = 0x00UL, /**< Command completed with no errors */
-    CY_SYSCLK_BAD_PARAM     = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x01UL), /**< Invalid function input parameter */
-    CY_SYSCLK_TIMEOUT       = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x02UL), /**< Timeout occurred */
-    CY_SYSCLK_INVALID_STATE = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x03UL)  /**< Clock is in an invalid state */
+    CY_SYSCLK_SUCCESS           = 0x00UL, /**< Command completed with no errors */
+    CY_SYSCLK_BAD_PARAM         = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x01UL), /**< Invalid function input parameter */
+    CY_SYSCLK_TIMEOUT           = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x02UL), /**< Timeout occurred */
+    CY_SYSCLK_INVALID_STATE     = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x03UL), /**< Clock is in an invalid state */
+    CY_SYSCLK_UNSUPPORTED_STATE = (CY_SYSCLK_ID | CY_PDL_STATUS_ERROR | 0x04UL) /**< Feature Unsupported */
 } cy_en_sysclk_status_t;
 /** \} group_sysclk_returns */
 
@@ -820,7 +972,7 @@ typedef enum
 #if ((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE)))
     /* Internal storage for external clock frequency user setting */
     extern uint32_t cySysClkExtFreq;
-#endif
+#endif /* ((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE))) */
 /** \endcond */
 
 /**
@@ -909,15 +1061,15 @@ typedef struct
 
 /** \} group_sysclk_macros */
 
-#if defined (CY_IP_MXS40SRSS)
+#if defined (CY_IP_MXS40SRSS)  || defined (CY_IP_MXS22SRSS)
 /** \cond */
 /**
 * \note
-* This macro is available for CAT1A devices.
+* This macro is available for CAT1A and CAT1D devices.
 **/
 #define SRSS_CLK_ECO_STATUS_Msk (SRSS_CLK_ECO_STATUS_ECO_OK_Msk | SRSS_CLK_ECO_STATUS_ECO_READY_Msk)
 /** \endcond */
-#endif /* CY_IP_MXS40SRSS */
+#endif /* defined (CY_IP_MXS40SRSS)  || defined (CY_IP_MXS22SRSS) */
 
 #if defined (CY_IP_MXS28SRSS)
 /** \cond */
@@ -925,8 +1077,8 @@ typedef struct
 * \note
 * It is available for CAT1B devices.
 **/
-#define SRSS_CLK_ECO_READY_Msk    SRSS_CLK_ECO_STATUS_ECO_CORE_READY_Msk
-#define SRSS_CLK_ECO_AMP_OK_Msk   SRSS_CLK_ECO_STATUS_ECO_CORE_AMP_OK_Msk
+#define SRSS_CLK_ECO_STATUS_Msk (SRSS_CLK_ECO_STATUS_ECO_CORE_READY_Msk | SRSS_CLK_ECO_STATUS_ECO_CORE_AMP_OK_Msk)
+
 /** \endcond */
 #endif /* CY_IP_MXS28SRSS */
 
@@ -958,6 +1110,8 @@ typedef enum
 * \addtogroup group_sysclk_eco_funcs
 * \{
 */
+ #if defined (CY_IP_MXS40SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS)
+
 /*******************************************************************************
 * Function Name: Cy_SysClk_EcoConfigure
 ****************************************************************************//**
@@ -1015,7 +1169,7 @@ typedef enum
 * \endverbatim
 *
 * \note
-* On CAT1B Device: \n
+* On CAT1C Device: \n
 *
 * \verbatim
 
@@ -1058,12 +1212,14 @@ typedef enum
 *           else INT(atrim / 2)
 * \endverbatim
 *
+* \note
+* This API is available for CAT1A,CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_EcoConfigure
 *
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_EcoConfigure(uint32_t freq, uint32_t cSum, uint32_t esr, uint32_t driveLevel);
-
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_EcoEnable
@@ -1078,7 +1234,8 @@ cy_en_sysclk_status_t Cy_SysClk_EcoConfigure(uint32_t freq, uint32_t cSum, uint3
 * \return Error / status code: \n
 * CY_SYSCLK_SUCCESS - ECO locked \n
 * CY_SYSCLK_TIMEOUT - ECO timed out and did not lock \n
-* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_INVALID_STATE - ECO already enabled \n
+* CY_SYSCLK_UNSUPPORTED_STATE - ECO is not present
 * For the PSoC 64 devices there are possible situations when function returns
 * the PRA error status code. This is because for PSoC 64 devices the function
 * uses the PRA driver to change the protected registers. Refer to
@@ -1088,36 +1245,18 @@ cy_en_sysclk_status_t Cy_SysClk_EcoConfigure(uint32_t freq, uint32_t cSum, uint3
 * Call \ref SystemCoreClockUpdate after this function calling
 * if it affects the CLK_HF0 frequency.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_EcoEnable
 *
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_EcoEnable(uint32_t timeoutus);
-
-
-#if defined (CY_IP_MXS28SRSS)
-/*******************************************************************************
-* Function Name: Cy_SysClk_EcoBleEnable
-****************************************************************************//**
-*
-* Enables the external crystal oscillator (ECO) for BlueTooth Usage. This function should be called
-* after \ref Cy_SysClk_EcoConfigure.
-*
-* \param control To be selected from \ref cy_en_eco_for_ble_t
-*
-* \param timeoutus timeoutus
-*
-* \return Error / status code: \n
-* CY_SYSCLK_SUCCESS - ECO locked \n
-* CY_SYSCLK_TIMEOUT - ECO timed out and did not lock \n
-* CY_SYSCLK_INVALID_STATE - ECO already enabled
-*
-* \note
-* This API is available for CAT1B devices.
-*
-*******************************************************************************/
-cy_en_sysclk_status_t Cy_SysClk_EcoBleControl(cy_en_eco_for_ble_t control, uint32_t timeoutus);
-#endif /* CY_IP_MXS28SRSS */
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_EcoGetFrequency
@@ -1133,7 +1272,7 @@ cy_en_sysclk_status_t Cy_SysClk_EcoBleControl(cy_en_eco_for_ble_t control, uint3
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_EcoEnable
 *
 * \note
-* This API is available for CAT1A devices.
+* This API is available for CAT1A & CAT1C devices.
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_EcoGetFrequency(void);
@@ -1148,6 +1287,9 @@ uint32_t Cy_SysClk_EcoGetFrequency(void);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_EcoDisable
+*
+* \note
+* This API is available for CAT1A & CAT1C devices.
 *
 *******************************************************************************/
 void Cy_SysClk_EcoDisable(void);
@@ -1164,13 +1306,84 @@ void Cy_SysClk_EcoDisable(void);
 * CY_SYSCLK_ECOSTAT_INACCURATE = ECO has sufficient amplitude but may not be meeting accuracy and duty cycle specifications \n
 * CY_SYSCLK_ECOSTAT_STABLE = ECO has fully stabilized
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_EcoGetStatus
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_EcoGetStatus(void);
+#endif /* defined (CY_IP_MXS40SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS) */
 
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_EcoPrescaleConfigure
+****************************************************************************//**
+*
+* Configures the external crystal oscillator (ECO) using ECO Prescaler
+* Configuration Register and derives clk_eco_prescaler
+*
+* \param enable ECO Prescaler enable/disable.
+*
+* \param int_div 10-bit integer value.
+*
+* \param frac_div 8-bit fraction value.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - ECO configuration completed successfully \n
+* CY_SYSCLK_BAD_PARAM - One or more invalid parameters \n
+* CY_SYSCLK_INVALID_STATE - ECO already enabled \n
+* CY_SYSCLK_UNSUPPORTED_STATE - ECO is not present
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_EcoPrescaleConfigure(uint32_t enable, uint32_t int_div, uint32_t frac_div);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_EcoPrescaleIsEnabled
+****************************************************************************//**
+*
+* Reports whether or not ECO Prescale is enabled.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_EcoPrescaleIsEnabled(void);
+
+#endif /* (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS) */
+
+#if defined (CY_IP_MXS28SRSS)
+/*******************************************************************************
+* Function Name: Cy_SysClk_EcoBleEnable
+****************************************************************************//**
+*
+* Enables the external crystal oscillator (ECO) for BlueTooth Usage. This function should be called
+* after \ref Cy_SysClk_EcoConfigure.
+*
+* \param control To be selected from \ref cy_en_eco_for_ble_t
+*
+* \param timeoutus timeoutus
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - ECO locked \n
+* CY_SYSCLK_TIMEOUT - ECO timed out and did not lock \n
+* CY_SYSCLK_INVALID_STATE - ECO already enabled \n
+* CY_SYSCLK_UNSUPPORTED_STATE - ECO is not present
+*
+* \note
+* This API is available for CAT1B devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_EcoBleControl(cy_en_eco_for_ble_t control, uint32_t timeoutus);
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_EcoBleGetStatus
@@ -1187,33 +1400,8 @@ uint32_t Cy_SysClk_EcoGetStatus(void);
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_EcoBleGetStatus(void);
+#endif /* defined (CY_IP_MXS28SRSS) */
 
-
-/*******************************************************************************
-* Function Name: Cy_SysClk_EcoPrescaleConfigure
-****************************************************************************//**
-*
-* Configures the external crystal oscillator (ECO) using ECO Prescaler
-* Configuration Register and derives clk_eco_prescaler
-*
-* \param enable ECO Prescaler enable/disable.
-*
-* \param frac_div 8-bit fraction value.
-*
-* \param int_div 10-bit integer value.
-*
-*
-* \return Error / status code: \n
-* CY_SYSCLK_SUCCESS - ECO configuration completed successfully \n
-* CY_SYSCLK_BAD_PARAM - One or more invalid parameters \n
-* CY_SYSCLK_INVALID_STATE - ECO already enabled
-*
-* \note
-* This API is available for CAT1B devices.
-*
-*******************************************************************************/
-cy_en_sysclk_status_t Cy_SysClk_EcoPrescaleConfigure(uint32_t enable, uint32_t frac_div, uint32_t int_div);
-#endif
 /** \} group_sysclk_eco_funcs */
 
 
@@ -1231,18 +1419,32 @@ cy_en_sysclk_status_t Cy_SysClk_EcoPrescaleConfigure(uint32_t enable, uint32_t f
 
 typedef enum
 {
+#if defined (CY_IP_MXS22SRSS)
+    CY_SYSCLK_CLKPATH_IN_IHO    =     0U, /**< Select the IMO as the output of the path mux */
+#else
     CY_SYSCLK_CLKPATH_IN_IMO    =     0U, /**< Select the IMO as the output of the path mux */
+#endif /* defined (CY_IP_MXS22SRSS) */
     CY_SYSCLK_CLKPATH_IN_EXT    =     1U, /**< Select the EXT as the output of the path mux */
     CY_SYSCLK_CLKPATH_IN_ECO    =     2U, /**< Select the ECO as the output of the path mux */
     CY_SYSCLK_CLKPATH_IN_ALTHF  =     3U, /**< Select the ALTHF as the output of the path mux */
 
     CY_SYSCLK_CLKPATH_IN_DSIMUX =     4U, /**< Select the DSI MUX output as the output of the path mux */
+
+#if defined (CY_IP_MXS22SRSS)
+    CY_SYSCLK_CLKPATH_IN_IMO    =     5U, /**< Select the IMO as the output of the path mux */
+#else
     CY_SYSCLK_CLKPATH_IN_LPECO  =     5U, /**< Select the LPECO as the output of the path mux */
     CY_SYSCLK_CLKPATH_IN_IHO    =     6U, /**< Select the IHO as the output of the path mux */
+#endif /* defined (CY_IP_MXS22SRSS) */
     CY_SYSCLK_CLKPATH_IN_DSI    = 0x100U, /**< Select a DSI signal (0 - 15) as the output of the DSI mux and path mux.
                                            *   Make sure the DSI clock sources are available on used device.
                                            */
     CY_SYSCLK_CLKPATH_IN_ILO    = 0x110U, /**< Select the ILO (16) as the output of the DSI mux and path mux */
+
+#if defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)
+    CY_SYSCLK_CLKPATH_IN_ILO0   = CY_SYSCLK_CLKPATH_IN_ILO,
+#endif /* defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3) */
+
     CY_SYSCLK_CLKPATH_IN_WCO    = 0x111U, /**< Select the WCO (17) as the output of the DSI mux and path mux */
     CY_SYSCLK_CLKPATH_IN_ALTLF  = 0x112U, /**< Select the ALTLF (18) as the output of the DSI mux and path mux.
                                            *   Make sure the ALTLF clock sources in available on used device.
@@ -1265,7 +1467,7 @@ typedef struct
     uint32_t                          clk_path;      /**< clkpath  */
     cy_en_clkpath_in_sources_t         source;        /**< Source */
 } cy_stc_pra_clkpathsetsource_t;
-#endif
+#endif /* (defined(CY_DEVICE_SECURE)) */
 
 /** \} group_sysclk_path_src_enums */
 
@@ -1310,6 +1512,13 @@ typedef struct
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPathSetSource
+*
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
+*
+* \note  It takes four cycles of the originally selected clock to switch away
+* from it.  Do not disable the original clock during this time.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_ClkPathSetSource(uint32_t clkPath, cy_en_clkpath_in_sources_t source);
@@ -1449,7 +1658,8 @@ typedef struct
 * \return  Error / status code: \n
 * CY_SYSCLK_SUCCESS - FLL successfully configured \n
 * CY_SYSCLK_INVALID_STATE - FLL not configured because it is enabled \n
-* CY_SYSCLK_BAD_PARAM - desired output frequency is out of valid range
+* CY_SYSCLK_BAD_PARAM - desired output frequency is out of valid range \n
+* CY_SYSCLK_UNSUPPORTED_STATE - FLL is not present
 *
 * \note
 * Call this function after changing the FLL input frequency, for example if
@@ -1583,6 +1793,10 @@ void Cy_SysClk_FllGetConfiguration(cy_stc_fll_manual_config_t *config);
 * Call \ref Cy_SysLib_SetWaitStates before calling this function if
 * the FLL is the source of CLK_HF0 and the CLK_HF0 frequency is increasing.
 *
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_FllEnable
 *
@@ -1656,7 +1870,7 @@ bool Cy_SysClk_FllLocked(void);
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_FllDisable(void);
 
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3))
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_FllOutputDividerEnable
@@ -1668,6 +1882,7 @@ cy_en_sysclk_status_t Cy_SysClk_FllDisable(void);
 *
 *******************************************************************************/
 void Cy_SysClk_FllOutputDividerEnable(bool enable);
+
 #endif
 
 /*******************************************************************************
@@ -1685,13 +1900,14 @@ void Cy_SysClk_FllOutputDividerEnable(bool enable);
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_FllGetFrequency(void);
+
 /** \} group_sysclk_fll_funcs */
 
 
 /* ========================================================================== */
 /* ===========================    PLL SECTION    ============================ */
 /* ========================================================================== */
-
+#if defined (CY_IP_MXS40SRSS) || defined (CY_IP_MXS22SRSS)
 
 /**
 * \addtogroup group_sysclk_pll_structs
@@ -1717,6 +1933,14 @@ typedef struct
     uint8_t                     outputDiv;    /**< CLK_PLL_CONFIG register, OUTPUT_DIV bits */
     bool                        lfMode;       /**< CLK_PLL_CONFIG register, PLL_LF_MODE bit */
     cy_en_fll_pll_output_mode_t outputMode;   /**< CLK_PLL_CONFIG register, BYPASS_SEL bits */
+#if (CY_SRSS_PLL400M_PRESENT) || defined(CY_DOXYGEN)
+    uint32_t                    fracDiv;      /**< CLK_PLL_CONFIG2 register, FRAC_DIV bits, only for CAT1C devices */
+    bool                        fracDitherEn; /**< CLK_PLL_CONFIG2 register, FRAC_DITHER_EN bits, only for CAT1C devices */
+    bool                        fracEn;       /**< CLK_PLL_CONFIG2 register, FRAC_EN bits, only for CAT1C devices */
+    uint32_t                    sscgDepth;    /**< CLK_PLL_CONFIG3 register, SSCG_DEPTH bits, only for CAT1C devices */
+    uint8_t                     sscgRate;     /**< CLK_PLL_CONFIG3 register, SSCG_RATE bits, only for CAT1C devices */
+    bool                        sscgEn;       /**< CLK_PLL_CONFIG3 register, SSCG_EN bits, only for CAT1C devices */
+#endif
 } cy_stc_pll_manual_config_t;
 /** \} group_sysclk_pll_structs */
 
@@ -1753,7 +1977,8 @@ typedef struct
 * \return  Error / status code: \n
 * CY_SYSCLK_SUCCESS - PLL successfully configured \n
 * CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
-* CY_SYSCLK_BAD_PARAM - Invalid clock path number, or input or desired output frequency is out of valid range
+* CY_SYSCLK_BAD_PARAM - Invalid clock path number, or input or desired output frequency is out of valid range \n
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
 *
 * \note
 * Call this function after changing the PLL input frequency, for example if
@@ -1780,6 +2005,9 @@ typedef struct
 * after \ref Cy_SysClk_PllEnable call. Any call to \ref Cy_SysClk_PllGetConfiguration
 * before calling \ref Cy_SysClk_PllEnable returns old configuration values.
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllConfigure
 *
@@ -1801,6 +2029,7 @@ cy_en_sysclk_status_t Cy_SysClk_PllConfigure(uint32_t clkPath, const cy_stc_pll_
 * CY_SYSCLK_SUCCESS - PLL successfully configured \n
 * CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
 * CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
 * CY_PRA_STATUS_* - For the PSoC 64 devices there are possible situations when
 * function returns the PRA error status code \ref cy_en_pra_status_t instead of
 * \ref cy_en_sysclk_status_t. This is because for PSoC 64 devices the function
@@ -1832,6 +2061,9 @@ cy_en_sysclk_status_t Cy_SysClk_PllConfigure(uint32_t clkPath, const cy_stc_pll_
 * after \ref Cy_SysClk_PllEnable call. Any call to \ref Cy_SysClk_PllGetConfiguration
 * before calling \ref Cy_SysClk_PllEnable returns old configuration values.
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllManualConfigure
 *
@@ -1852,6 +2084,7 @@ cy_en_sysclk_status_t Cy_SysClk_PllManualConfigure(uint32_t clkPath, const cy_st
 * \return  Error / status code: \n
 * CY_SYSCLK_SUCCESS - PLL data successfully reported \n
 * CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
 * CY_PRA_STATUS_* - For the PSoC 64 devices there are possible situations when
 * function returns the PRA error status code \ref cy_en_pra_status_t instead of
 * \ref cy_en_sysclk_status_t. This is because for PSoC 64 devices the function
@@ -1862,6 +2095,9 @@ cy_en_sysclk_status_t Cy_SysClk_PllManualConfigure(uint32_t clkPath, const cy_st
 * On PSoC 64 devices the configuration on the PRA driver will be reflected
 * after \ref Cy_SysClk_PllEnable call. Any call to \ref Cy_SysClk_PllGetConfiguration
 * before calling \ref Cy_SysClk_PllEnable returns old configuration values.
+*
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllGetConfiguration
@@ -1886,6 +2122,7 @@ cy_en_sysclk_status_t Cy_SysClk_PllGetConfiguration(uint32_t clkPath, cy_stc_pll
 * CY_SYSCLK_SUCCESS - PLL successfully enabled \n
 * CY_SYSCLK_TIMEOUT - Timeout waiting for PLL lock \n
 * CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
 * CY_PRA_STATUS_* - For the PSoC 64 devices there are possible situations when
 * function returns the PRA error status code \ref cy_en_pra_status_t instead of
 * \ref cy_en_sysclk_status_t. This is because for PSoC 64 devices the function
@@ -1903,6 +2140,13 @@ cy_en_sysclk_status_t Cy_SysClk_PllGetConfiguration(uint32_t clkPath, cy_stc_pll
 * \note
 * Call \ref Cy_SysLib_SetWaitStates after calling this function if
 * the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is decreasing.
+*
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllEnable
@@ -1923,6 +2167,9 @@ cy_en_sysclk_status_t Cy_SysClk_PllEnable(uint32_t clkPath, uint32_t timeoutus);
 * false = disabled \n
 * true = enabled
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllDisable
 *
@@ -1941,6 +2188,9 @@ bool Cy_SysClk_PllIsEnabled(uint32_t clkPath);
 * \return
 * false = not locked \n
 * true = locked
+*
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllLocked
@@ -1962,6 +2212,9 @@ bool Cy_SysClk_PllLocked(uint32_t clkPath);
 * false = did not lose lock \n
 * true = lost lock
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllLostLock
 *
@@ -1980,6 +2233,7 @@ bool Cy_SysClk_PllLostLock(uint32_t clkPath);
 * \return Error / status code: \n
 * CY_SYSCLK_SUCCESS - PLL successfully disabled \n
 * CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
 * CY_PRA_STATUS_* - For the PSoC 64 devices there are possible situations when
 * function returns the PRA error status code \ref cy_en_pra_status_t instead of
 * \ref cy_en_sysclk_status_t. This is because for PSoC 64 devices the function
@@ -2003,6 +2257,9 @@ bool Cy_SysClk_PllLostLock(uint32_t clkPath);
 * If AUTO mode should be used, call \ref Cy_SysClk_PllConfigure or
 * \ref Cy_SysClk_PllManualConfigure before calling \ref Cy_SysClk_PllEnable.
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllDisable
 *
@@ -2021,15 +2278,564 @@ cy_en_sysclk_status_t Cy_SysClk_PllDisable(uint32_t clkPath);
 *
 * \note If the return value equals zero, that means PLL is disabled.
 *
+* \note
+* This API is available for CAT1A, CAT1C and CAT1D devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PllGetFrequency
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_PllGetFrequency(uint32_t clkPath);
+
+#if defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)
+
+/********************************************************************************
+* Function Name: Cy_SysClk_Pll200MConfigure
+****************************************************************************//**
+*
+* Configures 200M PLL.
+* The configuration formula used is:
+*   Fout = pll_clk * (P / Q / div_out), where:
+*     Fout is the desired output frequency
+*     pll_clk is the frequency of the input source
+*     P is the feedback divider. Its value is in bitfield FEEDBACK_DIV.
+*     Q is the reference divider. Its value is in bitfield REFERENCE_DIV.
+*     div_out is the reference divider. Its value is in bitfield OUTPUT_DIV.
+*
+* \param pllNum Selects which PLL to configure
+*
+* \param config \ref cy_stc_pll_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully configured \n
+* CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
+* CY_SYSCLK_BAD_PARAM - Invalid clock path number, or input or desired output frequency is out of valid range \n
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call this function after changing the PLL input frequency, for example if
+* \ref Cy_SysClk_ClkPathSetSource() is called.
+*
+* \note
+* Do not call this function when the PLL is enabled. If it is called, then this function
+* returns immediately with an error return value and no register updates.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll200MConfigure(uint32_t pllNum, const cy_stc_pll_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MManualConfigure
+****************************************************************************//**
+*
+* Manually configures a 200M PLL based on user inputs.
+*
+* \param pllNum Selects which PLL to configure.
+*
+* \param config \ref cy_stc_pll_manual_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully configured \n
+* CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+* For the PSoC 64 devices there are possible situations when function returns
+* the PRA error status code. This is because for PSoC 64 devices the function
+* uses the PRA driver to change the protected registers. Refer to
+* \ref cy_en_pra_status_t for more details.
+*
+* \note
+* Call this function after changing the PLL input frequency; for example if
+* \ref Cy_SysClk_ClkPathSetSource() is called.
+*
+* \note
+* Do not call this function when the PLL is enabled. If it is called, then this function
+* returns immediately with an error return value and no register updates.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll200MManualConfigure(uint32_t pllNum, const cy_stc_pll_manual_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MGetConfiguration
+****************************************************************************//**
+*
+* Reports configuration settings for 200M PLL.
+*
+* \param pllNum Selects which PLL to report.
+*
+* \param config \ref cy_stc_pll_manual_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL data successfully reported \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll200MGetConfiguration(uint32_t pllNum, cy_stc_pll_manual_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MEnable
+****************************************************************************//**
+*
+* Enables the 200M PLL. The PLL should be configured before calling this function.
+*
+* \param pllNum Selects which PLL to enable.
+*
+* \param timeoutus amount of time in microseconds to wait for the PLL to lock.
+* If the lock doesn't occur, PLL is stopped. To avoid waiting for lock, set this to 0
+* and manually check for lock using \ref Cy_SysClk_PllLocked.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully enabled \n
+* CY_SYSCLK_TIMEOUT - Timeout waiting for PLL lock \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll200MEnable(uint32_t pllNum, uint32_t timeoutus);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MIsEnabled
+****************************************************************************//**
+*
+* Reports whether or not the selected 200M PLL is enabled.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll200MIsEnabled(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MLocked
+****************************************************************************//**
+*
+* Reports whether or not the selected 200M PLL is locked.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = not locked \n
+* true = locked
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll200MLocked(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MLostLock
+****************************************************************************//**
+*
+* Reports whether or not the selected 200M PLL lost its lock since the last time this
+* function was called. Clears the lost lock indicator.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = did not lose lock \n
+* true = lost lock
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll200MLostLock(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MDisable
+****************************************************************************//**
+*
+* Disables the selected 200M PLL.
+*
+* \param pllNum Selects which PLL to disable.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully disabled \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is decreasing.
+*
+* \sideeffect
+* This function sets PLL bypass mode to CY_SYSCLK_FLLPLL_OUTPUT_INPUT.
+* If AUTO mode should be used, call \ref Cy_SysClk_PllConfigure or
+* \ref Cy_SysClk_PllManualConfigure before calling \ref Cy_SysClk_PllEnable.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll200MDisable(uint32_t pllNum);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MGetFrequency
+****************************************************************************//**
+*
+* Gets the frequency of PLL200M
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* PLL200M Frequency
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_Pll200MGetFrequency(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MConfigure
+****************************************************************************//**
+*
+* Configures 400M PLL.
+* The configuration formula used is:
+*   Fout = pll_clk * (P / Q / div_out), where:
+*     Fout is the desired output frequency
+*     pll_clk is the frequency of the input source
+*     P is the feedback divider. Its value is in bitfield FEEDBACK_DIV.
+*     Q is the reference divider. Its value is in bitfield REFERENCE_DIV.
+*     div_out is the reference divider. Its value is in bitfield OUTPUT_DIV.
+*
+* \param pllNum Selects which PLL to configure
+*
+* \param config \ref cy_stc_pll_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully configured \n
+* CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
+* CY_SYSCLK_BAD_PARAM - Invalid clock path number, or input or desired output frequency is out of valid range \n
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call this function after changing the PLL input frequency, for example if
+* \ref Cy_SysClk_ClkPathSetSource() is called.
+*
+* \note
+* Do not call this function when the PLL is enabled. If it is called, then this function
+* returns immediately with an error return value and no register updates.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll400MConfigure(uint32_t pllNum, const cy_stc_pll_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MManualConfigure
+****************************************************************************//**
+*
+* Manually configures a 400M PLL based on user inputs.
+*
+* \param pllNum Selects which PLL to configure.
+*
+* \param config \ref cy_stc_pll_manual_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully configured \n
+* CY_SYSCLK_INVALID_STATE - PLL not configured because it is enabled \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call this function after changing the PLL input frequency; for example if
+* \ref Cy_SysClk_ClkPathSetSource() is called.
+*
+* \note
+* Do not call this function when the PLL is enabled. If it is called, then this function
+* returns immediately with an error return value and no register updates.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the PLL frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll400MManualConfigure(uint32_t pllNum, const cy_stc_pll_manual_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MGetConfiguration
+****************************************************************************//**
+*
+* Reports configuration settings for 400M PLL.
+*
+* \param pllNum Selects which PLL to report.
+*
+* \param config \ref cy_stc_pll_manual_config_t
+*
+* \return  Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL data successfully reported \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll400MGetConfiguration(uint32_t pllNum, cy_stc_pll_manual_config_t *config);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MEnable
+****************************************************************************//**
+*
+* Enables the 400M PLL. The PLL should be configured before calling this function.
+*
+* \param pllNum Selects which PLL to enable.
+*
+* \param timeoutus amount of time in microseconds to wait for the PLL to lock.
+* If the lock doesn't occur, PLL is stopped. To avoid waiting for lock, set this to 0
+* and manually check for lock using \ref Cy_SysClk_PllLocked.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully enabled \n
+* CY_SYSCLK_TIMEOUT - Timeout waiting for PLL lock \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll400MEnable(uint32_t pllNum, uint32_t timeoutus);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MIsEnabled
+****************************************************************************//**
+*
+* Reports whether or not the selected 400M PLL is enabled.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll400MIsEnabled(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MLocked
+****************************************************************************//**
+*
+* Reports whether or not the selected 400M PLL is locked.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = not locked \n
+* true = locked
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll400MLocked(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll200MLostLock
+****************************************************************************//**
+*
+* Reports whether or not the selected 200M PLL lost its lock since the last time this
+* function was called. Clears the lost lock indicator.
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* false = did not lose lock \n
+* true = lost lock
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_Pll400MLostLock(uint32_t pllNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MDisable
+****************************************************************************//**
+*
+* Disables the selected 400M PLL.
+*
+* \param pllNum Selects which PLL to disable.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - PLL successfully disabled \n
+* CY_SYSCLK_BAD_PARAM - invalid clock path number
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+* CY_SYSCLK_UNSUPPORTED_STATE - PLL is not present
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* the PLL is the source of CLK_HF0 and the CLK_HF0 frequency is decreasing.
+*
+* \sideeffect
+* This function sets PLL bypass mode to CY_SYSCLK_FLLPLL_OUTPUT_INPUT.
+* If AUTO mode should be used, call \ref Cy_SysClk_PllConfigure or
+* \ref Cy_SysClk_PllManualConfigure before calling \ref Cy_SysClk_PllEnable.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_Pll400MDisable(uint32_t pllNum);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_Pll400MGetFrequency
+****************************************************************************//**
+*
+* Gets the frequency of PLL400M
+*
+* \param pllNum Selects which PLL to check.
+*
+* \return
+* PLL400M Frequency
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_Pll400MGetFrequency(uint32_t pllNum);
+
+#endif
+
 /** \} group_sysclk_pll_funcs */
 
+#endif
 
-#if defined (CY_IP_MXS40SSRSS)
+
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
 /* ========================================================================== */
 /* ===========================    IHO SECTION    ============================ */
 /* ========================================================================== */
@@ -2039,6 +2845,7 @@ uint32_t Cy_SysClk_PllGetFrequency(uint32_t clkPath);
 * \{
 */
 
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS)
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_IhoEnable
@@ -2051,7 +2858,12 @@ uint32_t Cy_SysClk_PllGetFrequency(uint32_t clkPath);
 * if it affects the CLK_HF0 frequency.
 *
 * \note
-* This API is available for devices having MXS40SSRSS IP.
+* This API is available for devices having MXS40SSRSS(CAT1B) and
+* CY_IP_MXS22SRSS IP(CAT1D).
+*
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
 *
 *******************************************************************************/
 void Cy_SysClk_IhoEnable(void);
@@ -2068,7 +2880,8 @@ void Cy_SysClk_IhoEnable(void);
 * true = enabled
 *
 * \note
-* This API is available for devices having MXS40SSRSS IP.
+* This API is available for devices having MXS40SSRSS(CAT1B) and
+* CY_IP_MXS22SRSS IP(CAT1D).
 *
 *******************************************************************************/
 bool Cy_SysClk_IhoIsEnabled(void);
@@ -2084,12 +2897,213 @@ bool Cy_SysClk_IhoIsEnabled(void);
 * if it affects the CLK_HF0 frequency.
 *
 * \note
-* This API is available for devices having MXS40SSRSS IP.
+* This API is available for devices having MXS40SSRSS(CAT1B) and
+* CY_IP_MXS22SRSS IP(CAT1D).
 *
 *******************************************************************************/
 void Cy_SysClk_IhoDisable(void);
+
+#endif
+
+#if defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IhoDeepsleepEnable
+****************************************************************************//**
+*
+* Enables the IHO during deepsleep mode
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+void Cy_SysClk_IhoDeepsleepEnable(void);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IhoIsDeepsleepEnabled
+****************************************************************************//**
+*
+* Reports whether or not the selected IHO is enabled during deepsleep mode.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+bool Cy_SysClk_IhoIsDeepsleepEnabled(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IhoDeepsleepDisable
+****************************************************************************//**
+*
+* Disables IHO during deepsleep mode.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling
+* if it affects the CLK_HF0 frequency.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+void Cy_SysClk_IhoDeepsleepDisable(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IhoDeepsleepDisable
+****************************************************************************//**
+*
+* Set the trim value for IHO.
+*
+* \param trimVal Trim value to be set for IHO.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+void Cy_SysClk_IhoSetTrim(uint32_t trimVal);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IhoDeepsleepDisable
+****************************************************************************//**
+*
+* Get the trim value configured for IHO.
+*
+* \return
+* Configured IHO Trim value.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_IhoGetTrim(void);
+
+
+#endif/* CY_IP_MXS22SRSS*/
+
 /** \} group_sysclk_iho_funcs */
-#endif /* MXS40SSRSS */
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)*/
+
+/* ========================================================================== */
+/* ===========================    IMO SECTION    ============================ */
+/* ========================================================================== */
+
+#if defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
+
+/**
+* IMO frequency select sources.
+*/
+
+typedef enum
+{
+    CY_SYSCLK_IMO_IN_4MHz                = 0U, /**< 4MHz selected for IMO */
+    CY_SYSCLK_IMO_IN_2MHz                = 1U, /**< 2MHz selected for IMO */
+} cy_en_imo_in_sources_t;
+
+/** \cond */
+#define  CY_SYSCLK_IMO_IS_FREQ_VALID(freqSelect) (((freqSelect) == CY_SYSCLK_IMO_IN_4MHz) || \
+                                                  ((freqSelect) == CY_SYSCLK_IMO_IN_2MHz))
+/** \endcond */
+
+
+/**
+* \addtogroup group_sysclk_imo_funcs
+* \{
+*/
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoEnable
+****************************************************************************//**
+*
+* Enables the IMO.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS IP(CAT1D).
+*
+*******************************************************************************/
+void Cy_SysClk_ImoEnable(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoIsEnabled
+****************************************************************************//**
+*
+* Reports whether or not the selected IMO is enabled.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available for devices having MXS40SSRSS(CAT1B) and
+* CY_IP_MXS22SRSS IP(CAT1D).
+*
+*******************************************************************************/
+bool Cy_SysClk_ImoIsEnabled(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoDisable
+****************************************************************************//**
+*
+* Disables IMO.
+*
+*
+* \note
+* This API is available for devices having MXS40SSRSS(CAT1B) and
+* CY_IP_MXS22SRSS IP(CAT1D).
+*
+*******************************************************************************/
+void Cy_SysClk_ImoDisable(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoDeepsleepEnable
+****************************************************************************//**
+*
+* Enables the IMO during deepsleep mode
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+void Cy_SysClk_ImoDeepsleepEnable(void);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoIsDeepsleepEnabled
+****************************************************************************//**
+*
+* Reports whether or not the selected IMO is enabled during deepsleep mode.
+*
+* \return
+* false = disabled \n
+* true = enabled
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+bool Cy_SysClk_ImoIsDeepsleepEnabled(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ImoDeepsleepDisable
+****************************************************************************//**
+*
+* Disables IMO during deepsleep mode.
+*
+* \note
+* This API is available for devices having CY_IP_MXS22SRSS(CAT1D) IP.
+*
+*******************************************************************************/
+void Cy_SysClk_ImoDeepsleepDisable(void);
+
+/** \} group_sysclk_imo_funcs */
+
+#endif
 
 
 /* ========================================================================== */
@@ -2100,6 +3114,7 @@ void Cy_SysClk_IhoDisable(void);
 * \{
 */
 
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN)
 /*******************************************************************************
 * Function Name: Cy_SysClk_IloEnable
 ****************************************************************************//**
@@ -2110,6 +3125,9 @@ void Cy_SysClk_IhoDisable(void);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloEnable
+*
+* \note
+* This API is available for CAT1A, CAT1B and CAT1D devices.
 *
 *******************************************************************************/
 void Cy_SysClk_IloEnable(void);
@@ -2127,7 +3145,7 @@ void Cy_SysClk_IloEnable(void);
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloDisable
 *
 * \note
-* This API is available for CAT1A devices.
+* This API is available for CAT1A, CAT1B and CAT1D devices.
 *
 *******************************************************************************/
 bool Cy_SysClk_IloIsEnabled(void);
@@ -2155,6 +3173,9 @@ bool Cy_SysClk_IloIsEnabled(void);
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloDisable
 *
+* \note
+* This API is available for CAT1A, CAT1B and CAT1D devices.
+*
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_IloDisable(void);
 
@@ -2175,8 +3196,107 @@ cy_en_sysclk_status_t Cy_SysClk_IloDisable(void);
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloHibernateOn
 *
+* \note
+* This API is available for CAT1A, CAT1B and CAT1D devices.
+*
 *******************************************************************************/
 void Cy_SysClk_IloHibernateOn(bool on);
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN)  */
+
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN)
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloSrcEnable
+****************************************************************************//**
+*
+* Enables the ILO.
+*
+* \param iloNum - ILO index , 0 : ILO0, 1: ILO1
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloSrcEnable
+*
+* \note The watchdog timer (WDT) must be unlocked before calling this function.
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+void Cy_SysClk_IloSrcEnable(uint32_t iloNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloSrcIsEnabled
+****************************************************************************//**
+*
+* Reports the Enabled/Disabled status of the ILO.
+*
+* \param iloNum - ILO index , ILO0 or ILO1
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloSrcIsEnabled
+*
+* \return Boolean status of ILO: true - Enabled, false - Disabled.
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_IloSrcIsEnabled(uint32_t iloNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloSrcDisable
+****************************************************************************//**
+*
+* Disables the ILO. ILO can't be disabled if WDT is enabled.
+*
+* \param iloNum - ILO index , 0 : ILO0, 1: ILO1
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloSrcDisable
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - ILO successfully disabled \n
+* CY_SYSCLK_INVALID_STATE - Cannot disable the ILO if the WDT is enabled.
+* CY_SYSCLK_INVALID_STATE - ECO already enabled
+*
+* \note The watchdog timer (WDT) must be unlocked before calling this function.
+* Do not call this function if the WDT is enabled, because the WDT is clocked by
+* the ILO.
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_IloSrcDisable(uint32_t iloNum);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloSrcHibernateOn
+****************************************************************************//**
+*
+* Controls whether the ILO0 stays on during a hibernate, or through an XRES or
+* brown-out detect (BOD) event, this feature is not available for ILO1.
+*
+* \param iloNum - ILO index , 0 : ILO0, 1: ILO1(Feature not available, ignored)
+*
+* \param on
+* true = ILO stays on during hibernate or across XRES/BOD. \n
+* false = ILO turns off for hibernate or XRES/BOD.
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_IloSrcHibernateOn
+*
+* \note Writes to the register/bit are ignored if the watchdog (WDT) is locked.
+*
+* \note
+* This API is available for CAT1C devices.
+*
+*******************************************************************************/
+void Cy_SysClk_IloSrcHibernateOn(uint32_t iloNum, bool on);
+
+#endif /* (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) */
+
 /** \} group_sysclk_ilo_funcs */
 
 
@@ -2194,7 +3314,7 @@ void Cy_SysClk_IloHibernateOn(bool on);
 * Enables the PILO.
 *
 * \note This function blocks for 1 millisecond between enabling the PILO and
-* releasing the PILO reset.
+* releasing the PILO reset. This is applicable only for CAT1A Devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PiloEnable
@@ -2213,9 +3333,6 @@ void Cy_SysClk_PiloEnable(void);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PiloDisable
-*
-* \note
-* This API is available for CAT1A devices.
 *
 *******************************************************************************/
 bool Cy_SysClk_PiloIsEnabled(void);
@@ -2259,6 +3376,62 @@ void Cy_SysClk_PiloSetTrim(uint32_t trimVal);
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_PiloGetTrim(void);
+
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
+/*******************************************************************************
+* Function Name: Cy_SysClk_PiloBackupEnable
+****************************************************************************//**
+*
+* Enables the PILO as always on if Backup Domain is present.
+*
+* \note
+* This API is available for CAT1B & CAT1D devices.
+*
+*******************************************************************************/
+void Cy_SysClk_PiloBackupEnable(void);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_PiloBackupDisable
+****************************************************************************//**
+*
+* Disables the PILO as always on if Backup Domain is present.
+*
+* \note
+* This API is available for CAT1B & CAT1D devices.
+*
+*******************************************************************************/
+void Cy_SysClk_PiloBackupDisable(void);
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || defined (CY_DOXYGEN) */
+
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_DOXYGEN)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_PiloTcscEnable
+****************************************************************************//**
+*
+* Enables the PILO TCSC(Second order temperature curvature correction) Feature.
+*
+* \note
+* This API is available for CAT1B devices.
+*
+*******************************************************************************/
+void Cy_SysClk_PiloTcscEnable(void);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_PiloTcscDisable
+****************************************************************************//**
+*
+* Disables the PILO TCSC(Second order temperature curvature correction) Feature.
+*
+* \note
+* This API is available for CAT1B devices.
+*
+*******************************************************************************/
+void Cy_SysClk_PiloTcscDisable(void);
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_DOXYGEN) */
+
 /** \} group_sysclk_pilo_funcs */
 
 
@@ -2281,6 +3454,40 @@ uint32_t Cy_SysClk_PiloGetTrim(void);
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_AltHfGetFrequency(void);
+
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_AltHfEnable
+****************************************************************************//**
+*
+* Enables the ATLHF.
+*
+* \note
+* This API is available for CAT1B devices.
+*
+* \return Error / status code: \n
+* CY_SYSCLK_SUCCESS - ALTHF successfully disabled \n
+* CY_SYSCLK_TIMEOUT - ALTHF enabling failed due to timeout
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_AltHfEnable(uint32_t timeoutus);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IsAltHfEnabled
+****************************************************************************//**
+*
+* Reports if ALTHF is enabled or not
+*
+* \return Status of ALTHF \n
+* true = Enabled \n
+* false = Not Enabled
+*
+*******************************************************************************/
+bool Cy_SysClk_IsAltHfEnabled(void);
+
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS) */
+
 /** \} group_sysclk_alt_hf_funcs */
 
 
@@ -2510,6 +3717,37 @@ bool Cy_SysClk_ClkMeasurementCountersDone(void);
 *******************************************************************************/
 int32_t Cy_SysClk_IloTrim(uint32_t iloFreq);
 
+#if  defined (CY_IP_MXS40SSRSS) || defined (CY_DOXYGEN)
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloSetTrim
+****************************************************************************//**
+*
+* Set ILO Trim Value
+*
+* \param trimVal Trim value to be set for ILO.
+*
+* \note
+* The function is applicable only for a CAT1B Devices.
+*
+*******************************************************************************/
+void Cy_SysClk_IloSetTrim(uint32_t trimVal);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IloGetTrim
+****************************************************************************//**
+*
+* Gets the ILO Trim Value.
+*
+* \return ILO Trim Value.
+*
+* \note
+* The function is applicable only for a CAT1B Devices.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_IloGetTrim(void);
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_DOXYGEN) */
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_PiloTrim
@@ -2542,9 +3780,6 @@ int32_t Cy_SysClk_PiloTrim(uint32_t piloFreq);
 * \note
 * This function must be call after every power-up.
 *
-* \note
-* The function is applicable only for a PSoC 6 BLE devices.
-*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PiloInitialTrimAndUpdateTrimStep
 *
@@ -2569,9 +3804,6 @@ void Cy_SysClk_PiloInitialTrim(void);
 * \note
 * To achieve best trimming results it is recommended to configure BLE ECO ALTHF
 * reference clock to 16 MHz.
-*
-* \note
-* The function is applicable only for a PSoC 6 BLE devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PiloInitialTrimAndUpdateTrimStep
@@ -2837,6 +4069,10 @@ bool Cy_SysClk_WcoOkay(void);
 *
 * Disables the WCO.
 *
+* \note
+* We need to set writable option using Cy_RTC_WriteEnable
+* before disabling WCO, and clear writable option after disabling WCO.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_WcoDisable
 *
@@ -2884,6 +4120,38 @@ void Cy_SysClk_WcoBypass(cy_en_wco_bypass_modes_t bypass);
 /* ========================================================================== */
 /* ============================    MF SECTION    ============================ */
 /* ========================================================================== */
+
+
+/**
+* \addtogroup group_sysclk_clk_mf_enums
+* \{
+*/
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined(CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
+
+/**
+* \note
+* This Enumeration is available for CAT1B devices.
+**/
+/**
+* Medium frequency (clkMf) input sources. See CLK_MF_SELECT register, MFCLK_SEL bits.
+* Used with functions \ref Cy_SysClk_ClkMfSetSource, and \ref Cy_SysClk_ClkMfGetSource.
+*/
+typedef enum
+{
+    CY_SYSCLK_CLKMF_IN_MFO               = 0U, /**< clkMf is sourced by the internal low speed oscillator (ILO) */
+    CY_SYSCLK_CLKMF_IN_ILO               = 1U, /**< clkMf is sourced by the internal low speed oscillator (ILO) */
+    CY_SYSCLK_CLKMF_IN_WCO               = 2U, /**< clkMf is sourced by the watch crystal oscillator (WCO) */
+    CY_SYSCLK_CLKMF_IN_ALTLF             = 3U, /**< clkMf is sourced by the Alternate Low Frequency Clock (ALTLF) */
+    CY_SYSCLK_CLKMF_IN_PILO              = 4U, /**< clkMf is sourced by the precision low speed oscillator (PILO) */
+    CY_SYSCLK_CLKMF_IN_ILO1              = 5U, /**< clkMf is sourced by the precision low speed oscillator (ILO1) */
+    CY_SYSCLK_CLKMF_IN_ECO_PRESCALER     = 6U, /**< clkMf is sourced by the External Clock Oscillator (ECO Prescaler) */
+    CY_SYSCLK_CLKMF_IN_LPECO             = 7U, /**< clkMf is sourced by the External Clock Oscillator (LPECO) */
+} cy_en_clkmf_in_sources_t;
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined (CY_DOXYGEN) */
+
+/** \} group_sysclk_clk_mf_enums */
+
 /**
 * \addtogroup group_sysclk_mf_funcs
 * \{
@@ -2933,6 +4201,26 @@ bool Cy_SysClk_MfoIsEnabled(void);
 void Cy_SysClk_MfoDisable(void);
 
 
+/** \cond internal */
+#define CY_SYSCLK_MF_DIVIDER_MIN                  (1U)
+#define CY_SYSCLK_MF_DIVIDER_MAX                  (256U)
+#define CY_SYSCLK_IS_MF_DIVIDER_VALID(locDiv)     ((CY_SYSCLK_MF_DIVIDER_MIN <= (locDiv)) && ((locDiv) <= CY_SYSCLK_MF_DIVIDER_MAX))
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined(CY_IP_MXS22SRSS)
+/**
+ * \note
+ * This macro is available for CAT1B and CAT1D devices.
+ **/
+#define CY_SYSCLK_IF_MF_SOURCE_VALID(mfClkSrc)    (((mfClkSrc) == CY_SYSCLK_CLKMF_IN_MFO)     || \
+                                                    ((mfClkSrc) == CY_SYSCLK_CLKMF_IN_ILO) || \
+                                                    ((mfClkSrc) == CY_SYSCLK_CLKMF_IN_WCO) || \
+                                                    ((mfClkSrc) == CY_SYSCLK_CLKMF_IN_ALTLF) || \
+                                                    ((mfClkSrc) == CY_SYSCLK_CLKMF_IN_PILO))
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || defined(CY_IP_MXS22SRSS)*/
+
+/** \endcond */
+
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined(CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
 /*******************************************************************************
 * Function Name: Cy_SysClk_ClkMfEnable
 ****************************************************************************//**
@@ -2974,13 +4262,6 @@ bool Cy_SysClk_ClkMfIsEnabled(void);
 *
 *******************************************************************************/
 void Cy_SysClk_ClkMfDisable(void);
-
-
-/** \cond internal */
-#define CY_SYSCLK_MF_DIVIDER_MIN              (1U)
-#define CY_SYSCLK_MF_DIVIDER_MAX              (256U)
-#define CY_SYSCLK_IS_MF_DIVIDER_VALID(locDiv) ((CY_SYSCLK_MF_DIVIDER_MIN <= (locDiv)) && ((locDiv) <= CY_SYSCLK_MF_DIVIDER_MAX))
-/** \endcond */
 
 
 /*******************************************************************************
@@ -3029,8 +4310,43 @@ uint32_t Cy_SysClk_ClkMfGetDivider(void);
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkMfGetFrequency(void);
-/** \} group_sysclk_mf_funcs */
 
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN) */
+
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) ||  defined(CY_IP_MXS22SRSS) || defined (CY_DOXYGEN)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkMfSetSource
+****************************************************************************//**
+*
+* Sets the source for the Medium frequency clock(clkMf).
+*
+* \param source \ref cy_en_clkmf_in_sources_t
+*
+* \note
+* This API is available for CAT1B devices.
+*
+*******************************************************************************/
+void Cy_SysClk_ClkMfSetSource(cy_en_clkmf_in_sources_t source);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkMfGetSource
+****************************************************************************//**
+*
+* Reports the source for the Medium frequency clock (clkMf).
+*
+* \return \ref cy_en_clkmf_in_sources_t
+*
+* \note
+* This API is available for CAT1B devices.
+*
+*******************************************************************************/
+cy_en_clkmf_in_sources_t Cy_SysClk_ClkMfGetSource(void);
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS28SRSS) */
+
+/** \} group_sysclk_mf_funcs */
 
 /* ========================================================================== */
 /* =========================    clkHf[n] SECTION    ========================= */
@@ -3278,6 +4594,13 @@ cy_en_sysclk_status_t Cy_SysClk_ClkHfDisable(uint32_t clkHf);
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkHfSetSource
 *
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
+*
+* \note  It takes four cycles of the originally selected clock to switch away
+* from it.  Do not disable the original clock during this time.
+*
 *******************************************************************************/
 cy_en_sysclk_status_t Cy_SysClk_ClkHfSetSource(uint32_t clkHf, cy_en_clkhf_in_sources_t source);
 
@@ -3330,6 +4653,10 @@ cy_en_clkhf_in_sources_t Cy_SysClk_ClkHfGetSource(uint32_t clkHf);
 * Call \ref Cy_SysLib_SetWaitStates after calling this function if
 * CLK_HF0 frequency is decreasing.
 *
+* \note
+* Take into account the possible platform specific clkHf (and further
+* clocking chain links) frequency limitations while using this API.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkHfSetDivider
 *
@@ -3368,12 +4695,54 @@ cy_en_clkhf_dividers_t Cy_SysClk_ClkHfGetDivider(uint32_t clkHf);
 * The reported frequency may be zero, which indicates unknown. This happens if
 * the source input is dsi_out or clk_altlf.
 *
+* \note
+* Calculates the HF frequency irrespective of whether HF is enabled or not.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkHfSetDivider
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkHfGetFrequency(uint32_t clkHf);
 
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN)
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkHfDirectSel
+****************************************************************************//**
+*
+* Enable/Disable the direct source selection as IMO for CLK_HF[[n]]
+*
+* \param clkHf Selects the clkHf
+*
+* \param enable True - Selects IMO , False - Selects Root Mux
+*
+* \return \ref cy_en_sysclk_status_t
+* CY_SYSCLK_BAD_PARAM - If clkhf is incorrect.
+* CY_SYSCLK_SUCCESS - If successfully Enabled/Disabled.
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+*******************************************************************************/
+cy_en_sysclk_status_t Cy_SysClk_ClkHfDirectSel(uint32_t clkHf, bool enable);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IsClkHfDirectSelEnabled
+****************************************************************************//**
+*
+* Checks if direct source selection as IMO for CLK_HF[[n]] is enabled/disabled
+*
+* \param clkHf Selects the clkHf
+*
+* \return
+* True - IMO is selected  , False - Root Mux is selected
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_IsClkHfDirectSelEnabled(uint32_t clkHf);
+
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN) */
 
 /** \} group_sysclk_clk_hf_funcs */
 
@@ -3386,6 +4755,7 @@ uint32_t Cy_SysClk_ClkHfGetFrequency(uint32_t clkHf);
 * \{
 */
 
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN)
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_ClkFastSetDivider
@@ -3408,6 +4778,9 @@ uint32_t Cy_SysClk_ClkHfGetFrequency(uint32_t clkHf);
 * Call \ref Cy_SysLib_SetWaitStates after calling this function if
 * CLK_FAST frequency is decreasing.
 *
+* \note
+* This API is available only for CAT1A devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkFastSetDivider
 *
@@ -3424,6 +4797,9 @@ void Cy_SysClk_ClkFastSetDivider(uint8_t divider);
 * \return The divider value for the fast clock.
 * The integer division done is by (divider value + 1), or division by 1 to 256.
 *
+* \note
+* This API is available only for CAT1A devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkFastSetDivider
 *
@@ -3439,22 +4815,132 @@ uint8_t Cy_SysClk_ClkFastGetDivider(void);
 *
 * \return The frequency, in Hz.
 *
+* \note
+* This API is available only for CAT1A devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkFastSetDivider
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkFastGetFrequency(void);
 
+#endif /* (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN) */
+
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN)
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkFastSrcSetDivider
+****************************************************************************//**
+*
+* Sets the clock divider for the fast clock, which sources the main processor.
+* The source of this divider is clkHf[0].
+*
+* \param clkFastNum 0 for CLOCK_FAST_0 and 1 for CLOCK_FAST_1
+*
+* \param intDiv Integer divider
+*
+* \param fracDiv Fractional divider
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates before calling this function if
+* CLK_FAST frequency is increasing.
+*
+* \note
+* Call \ref Cy_SysLib_SetWaitStates after calling this function if
+* CLK_FAST frequency is decreasing.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+void Cy_SysClk_ClkFastSrcSetDivider(uint32_t clkFastNum, uint8_t intDiv, uint8_t fracDiv);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkFastSrcGetDivider
+****************************************************************************//**
+*
+* Returns the Integer and Fractional clock divider for the fast clock.
+*
+* \param clkFastNum 0 for CLOCK_FAST_0 and 1 for CLOCK_FAST_1
+*
+* \param dividerIntValue - Integer divider
+*
+* \param dividerFracValue - Fractional divider
+*
+* \return None. Loads pointed-to variables.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+void Cy_SysClk_ClkFastSrcGetDivider(uint32_t clkFastNum, uint32_t *dividerIntValue, uint32_t *dividerFracValue);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkFastSrcGetFrequency
+****************************************************************************//**
+*
+* Reports the frequency of the fast clock.
+*
+* \param clkFastNum 0 for CLOCK_FAST_0 and 1 for CLOCK_FAST_1
+*
+* \return The frequency, in Hz.
+*
+* \note
+* This API is available only for CAT1C devices.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_ClkFastSrcGetFrequency(uint32_t clkFastNum);
+
+#endif /* (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN) */
 
 /** \} group_sysclk_clk_fast_funcs */
 
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3))  || defined (CY_IP_MXS22SRSS)
 
 /* ========================================================================== */
 /* ========================    PERI SECTION    ========================== */
 /* ========================================================================== */
+
 /**
-* \addtogroup group_sysclk_clk_peri_grp_funcs
+* \addtogroup group_sysclk_clk_peripheral_enums
+* \{
+*/
+/**
+* Slave control Register Numbers
+* Used with functions \ref Cy_SysClk_ClkHfSetDivider and \ref Cy_SysClk_ClkHfGetDivider.
+*/
+typedef enum
+{
+    CY_SYSCLK_PERI_GROUP_SL_CTL   = 0U,    /**<Selects SL_CTL*/
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)  || defined (CY_IP_MXS22SRSS)
+    CY_SYSCLK_PERI_GROUP_SL_CTL2  = 1U,    /**<Selects SL_CTL2*/
+    CY_SYSCLK_PERI_GROUP_SL_CTL3  = 2U,    /**<Selects SL_CTL3*/
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)  || defined (CY_IP_MXS22SRSS) */
+} cy_en_peri_grp_sl_ctl_num_t;
+
+/** \} group_sysclk_clk_peripheral_enums */
+
+/** \cond internal */
+/* Macro to validate if the SL control register number passed */
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
+#define CY_SYSCLK_IS_SL_CTL_NUM_VALID(slaveCtl)           (((slaveCtl) == CY_SYSCLK_PERI_GROUP_SL_CTL) || \
+                                                           ((slaveCtl) == CY_SYSCLK_PERI_GROUP_SL_CTL2) || \
+                                                           ((slaveCtl) == CY_SYSCLK_PERI_GROUP_SL_CTL3))
+#else
+#define CY_SYSCLK_IS_SL_CTL_NUM_VALID(slaveCtl)           (((slaveCtl) == CY_SYSCLK_PERI_GROUP_SL_CTL))
+
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) */
+
+/** \endcond */
+
+
+/**
+* \addtogroup group_sysclk_clk_peripheral_funcs
 * \{
 */
 /*******************************************************************************
@@ -3465,14 +4951,19 @@ uint32_t Cy_SysClk_ClkFastGetFrequency(void);
 *
 * \return \ref cy_en_sysclk_status_t
 *
-* \funcusage
-* TBD
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 * \note
-* This API is available for CAT1B devices.
+* Clock divider functionality is product specific, Refer to TRM before using this API
+* Example:-
+* For CAT1B devices Group-0 does not have the clock divider functionality.
+* For CAT1C devices Group-0,1 and 2 does not have the clock divider functionality.
+* For the above not supported groups this API will return success, but write will
+* not happen.
 *
 *******************************************************************************/
-cy_en_sysclk_status_t Cy_SysClk_PeriGroupSetDivider(uint8_t groupNum, int8_t divider);
+cy_en_sysclk_status_t Cy_SysClk_PeriGroupSetDivider(uint32_t groupNum, uint32_t divider);
 
 
 /*******************************************************************************
@@ -3483,56 +4974,87 @@ cy_en_sysclk_status_t Cy_SysClk_PeriGroupSetDivider(uint8_t groupNum, int8_t div
 *
 * \return Divider value
 *
-* \funcusage
-* TBD
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 * \note
-* This API is available for CAT1B devices.
+* Clock divider functionality is product specific, Refer to TRM before using this API
+* Example:-
+* For CAT1B devices Group-0 does not have the clock divider functionality.
+* For CAT1C devices Group-0,1 and 2 does not have the clock divider functionality.
+* For the above not supported groups this API returns zero.
 *
 *******************************************************************************/
-int8_t Cy_SysClk_PeriGroupGetDivider(uint8_t groupNum);
+uint32_t Cy_SysClk_PeriGroupGetDivider(uint32_t groupNum);
 
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_PeriGroupSetSlaveCtl
 ****************************************************************************//**
 *
-* Sets the Slave Control value for a particular group
+* Sets the particular Slave Control value for a particular group
 *
 * \return \ref cy_en_sysclk_status_t
 *
-* \funcusage
-* TBD
+* \param groupNum Selects the PERI Group Number
+*
+* \param slaveCtl Selects the Slave Control Register Number
+*
+* \param value Value to be written
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
-cy_en_sysclk_status_t Cy_SysClk_PeriGroupSetSlaveCtl(uint8_t groupNum, uint32_t slaveCtl);
-
+cy_en_sysclk_status_t Cy_SysClk_PeriGroupSetSlaveCtl(uint32_t groupNum, cy_en_peri_grp_sl_ctl_num_t slaveCtl, uint32_t value);
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_PeriGroupGetSlaveCtl
 ****************************************************************************//**
 *
-* Gets the divider value for a particular group
+* Gets the particular Slave Control value for a particular group
 *
 * \return Divider value
 *
-* \funcusage
-* TBD
+* \param groupNum Selects the PERI Group Number
+*
+* \param slaveCtl Selects the Slave Control Register Number
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
-uint32_t Cy_SysClk_PeriGroupGetSlaveCtl(uint8_t groupNum);
-/** \} group_sysclk_clk_peri_grp_funcs */
-#endif
+uint32_t Cy_SysClk_PeriGroupGetSlaveCtl(uint32_t groupNum, cy_en_peri_grp_sl_ctl_num_t slaveCtl);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_IsPeriGroupSlaveCtlSet
+****************************************************************************//**
+*
+* Gets the mask value of particular slave control register for a particular group
+*
+* \return Divider value
+*
+* \param groupNum Selects the PERI Group Number
+*
+* \param slaveCtl Selects the Slave Control Register Number
+*
+* \param slaveMsk Selects the bit position(s) that needs to be obtained
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_IsPeriGroupSlaveCtlSet(uint32_t groupNum,cy_en_peri_grp_sl_ctl_num_t slaveCtl, uint32_t slaveMsk);
+
+
+/** \} group_sysclk_clk_peripheral_funcs */
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3))  || defined (CY_IP_MXS22SRSS) */
 
 /* ========================================================================== */
 /* ========================    clk_peri SECTION    ========================== */
 /* ========================================================================== */
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SRSS)
+
 /**
 * \addtogroup group_sysclk_clk_peri_funcs
 * \{
@@ -3553,6 +5075,9 @@ uint32_t Cy_SysClk_PeriGroupGetSlaveCtl(uint8_t groupNum);
 * \note
 * Call \ref SystemCoreClockUpdate after this function calling.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPeriSetDivider
 *
@@ -3568,13 +5093,14 @@ void Cy_SysClk_ClkPeriSetDivider(uint8_t divider);
 *
 * \return The frequency, in Hz.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPeriSetDivider
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkPeriGetFrequency(void);
-
-
 
 
 /*******************************************************************************
@@ -3586,6 +5112,9 @@ uint32_t Cy_SysClk_ClkPeriGetFrequency(void);
 * \return The divider value.
 * The integer division done is by (divider value + 1), or division by 1 to 256.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPeriSetDivider
 *
@@ -3593,6 +5122,7 @@ uint32_t Cy_SysClk_ClkPeriGetFrequency(void);
 uint8_t Cy_SysClk_ClkPeriGetDivider(void);
 /** \} group_sysclk_clk_peri_funcs */
 
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SRSS) */
 
 /* ========================================================================== */
 /* =====================    clk_peripherals SECTION    ====================== */
@@ -3616,7 +5146,7 @@ typedef enum
 * \addtogroup group_sysclk_clk_peripheral_funcs
 * \{
 */
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS)
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_PeriPclkSetDivider
@@ -3641,7 +5171,7 @@ typedef enum
 * \return \ref cy_en_sysclk_status_t
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
@@ -3668,7 +5198,7 @@ cy_en_sysclk_status_t
 * (8-bit divider) or 1 to 65536 (16-bit divider).
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_PeriPclkGetDivider(en_clk_dst_t ipBlock, cy_en_divider_types_t dividerType, uint32_t dividerNum);
@@ -3693,7 +5223,7 @@ uint32_t Cy_SysClk_PeriPclkGetDivider(en_clk_dst_t ipBlock, cy_en_divider_types_
 * \return None. Loads pointed-to variables.
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 void Cy_SysClk_PeriPclkGetFracDivider(en_clk_dst_t ipBlock, cy_en_divider_types_t dividerType, uint32_t dividerNum,
@@ -3728,7 +5258,7 @@ void Cy_SysClk_PeriPclkGetFracDivider(en_clk_dst_t ipBlock, cy_en_divider_types_
 * \return \ref cy_en_sysclk_status_t
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
@@ -3751,7 +5281,7 @@ cy_en_sysclk_status_t
 * \return \ref cy_en_sysclk_status_t
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
@@ -3771,7 +5301,7 @@ cy_en_sysclk_status_t
 * number within that type
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_PeriPclkGetAssignedDivider(en_clk_dst_t ipBlock);
@@ -3794,7 +5324,7 @@ uint32_t Cy_SysClk_PeriPclkGetAssignedDivider(en_clk_dst_t ipBlock);
 * for information on how to phase-align a divider after it is enabled.
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
@@ -3814,7 +5344,7 @@ cy_en_sysclk_status_t
 * \param dividerNum specifies which divider of the selected type to configure.
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
@@ -3845,12 +5375,78 @@ cy_en_sysclk_status_t
 * to 63.
 *
 * \note
-* This API is available for CAT1B devices.
+* This API is available for CAT1B, CAT1C and CAT1D devices.
 *
 *******************************************************************************/
 cy_en_sysclk_status_t
                 Cy_SysClk_PeriPclkEnablePhaseAlignDivider(en_clk_dst_t ipBlock, cy_en_divider_types_t dividerType, uint32_t dividerNum,
                                                         cy_en_divider_types_t dividerTypePA, uint32_t dividerNumPA);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_PeriPclkGetFrequency
+****************************************************************************//**
+*
+* Reports the frequency of the output of a given peripheral divider.
+*
+* \param ipBlock specifies ip block to connect the clock divider to.
+*
+* \param dividerType specifies which type of divider to use; \ref cy_en_divider_types_t
+*
+* \param dividerNum specifies which divider of the selected type to configure
+*
+* \return The frequency, in Hz.
+*
+* \note
+* The reported frequency may be zero, which indicates unknown. This happens if
+* the source input is dsi_out or clk_altlf.
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphGetFrequency
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_PeriPclkGetFrequency(en_clk_dst_t ipBlock,
+                                       cy_en_divider_types_t dividerType,
+                                       uint32_t dividerNum);
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_PeriPclkGetDividerEnabled
+****************************************************************************//**
+*
+* Reports the enabled/disabled state of the selected divider.
+*
+* \param ipBlock specifies ip block to connect the clock divider to.
+*
+* \param dividerType specifies which type of divider to use; \ref cy_en_divider_types_t.
+*
+* \param dividerNum specifies which divider of the selected type to configure.
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+*******************************************************************************/
+bool Cy_SysClk_PeriPclkGetDividerEnabled(en_clk_dst_t ipBlock,
+                                             cy_en_divider_types_t dividerType,
+                                             uint32_t dividerNum);
+
+/*******************************************************************************
+* Function Name: Cy_Sysclk_PeriPclkGetClkHfNum
+****************************************************************************//**
+*
+* Reports the corresponding CLK_HF* number for a particular PERI PCLK group
+*
+* \param grpNum specifies group number of PERI PCLK block.
+*
+* \return The CLK_HF* number.
+*
+* \note
+* This API is available for CAT1B, CAT1C and CAT1D devices.
+*
+*******************************************************************************/
+uint32_t Cy_Sysclk_PeriPclkGetClkHfNum(uint32_t grpNum);
+
 #endif
 
 /*******************************************************************************
@@ -3872,6 +5468,9 @@ cy_en_sysclk_status_t
 * (8-bit divider) or 1 to 65536 (16-bit divider).
 *
 * \return \ref cy_en_sysclk_status_t
+*
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkSetDivider.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphSetDivider
@@ -3897,6 +5496,9 @@ cy_en_sysclk_status_t
 * \return The divider value.
 * The integer division done is by (divider value + 1), or division by 1 to 256
 * (8-bit divider) or 1 to 65536 (16-bit divider).
+*
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkGetDivider.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphSetDivider
@@ -3930,6 +5532,9 @@ uint32_t Cy_SysClk_PeriphGetDivider(cy_en_divider_types_t dividerType, uint32_t 
 *
 * \return \ref cy_en_sysclk_status_t
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkSetFracDivider.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphSetFracDivider
 *
@@ -3955,6 +5560,9 @@ cy_en_sysclk_status_t
 *
 * \return None. Loads pointed-to variables.
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkGetFracDivider.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphSetFracDivider
 *
@@ -3977,6 +5585,9 @@ void Cy_SysClk_PeriphGetFracDivider(cy_en_divider_types_t dividerType, uint32_t 
 *
 * \return \ref cy_en_sysclk_status_t
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkAssignDivider.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphAssignDivider
 *
@@ -3996,6 +5607,9 @@ cy_en_sysclk_status_t
 *
 * \return The divider type and number, where bits [7:6] = type, bits[5:0] = divider
 * number within that type
+*
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkGetAssignedDivider.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphAssignDivider
@@ -4018,6 +5632,9 @@ uint32_t Cy_SysClk_PeriphGetAssignedDivider(en_clk_dst_t ipBlock);
 * divider is aligned to clk_peri. See \ref Cy_SysClk_PeriphDisableDivider()
 * for information on how to phase-align a divider after it is enabled.
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkEnableDivider.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphEnableDivider
 *
@@ -4035,6 +5652,9 @@ cy_en_sysclk_status_t
 * \param dividerType specifies which type of divider to use; \ref cy_en_divider_types_t.
 *
 * \param dividerNum specifies which divider of the selected type to configure.
+*
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkDisableDivider.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphDisableDivider
@@ -4065,6 +5685,9 @@ cy_en_sysclk_status_t
 * To phase-align a divider to clk_peri, set dividerTypePA to 3 and dividerNumPA
 * to 63.
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkEnablePhaseAlignDivider.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphEnablePhaseAlignDivider
 *
@@ -4078,7 +5701,7 @@ cy_en_sysclk_status_t
 * Function Name: Cy_SysClk_PeriphGetDividerEnabled
 ****************************************************************************//**
 *
-* Reports the enabled/disabled atate of the selected divider.
+* Reports the enabled/disabled state of the selected divider.
 *
 * \param dividerType specifies which type of divider to use; \ref cy_en_divider_types_t.
 *
@@ -4087,6 +5710,9 @@ cy_en_sysclk_status_t
 * \return The enabled/disabled state; \n
 * false = disabled \n
 * true = enabled
+*
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkGetDividerEnabled.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphGetDividerEnabled
@@ -4111,6 +5737,9 @@ bool Cy_SysClk_PeriphGetDividerEnabled(cy_en_divider_types_t dividerType, uint32
 * The reported frequency may be zero, which indicates unknown. This happens if
 * the source input is dsi_out or clk_altlf.
 *
+* \note
+* This API is deprecated for CAT1B, CAT1C and CAT1D devices, use Cy_SysClk_PeriPclkGetFrequency.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_PeriphGetFrequency
 *
@@ -4129,19 +5758,22 @@ uint32_t Cy_SysClk_PeriphGetFrequency(cy_en_divider_types_t dividerType, uint32_
 * \{
 */
 
+#if defined (CY_IP_MXS40SRSS)
 
 /*******************************************************************************
 * Function Name: Cy_SysClk_ClkSlowSetDivider
 ****************************************************************************//**
 *
-* Sets the clock divider for the slow clock. The source of this clock is the
-* peripheral clock (clkPeri), which is sourced from clkHf[0].
+* Sets the clock divider for the slow clock.
 *
 * \param divider Divider value between 0 and 255.
 * Causes integer division of (divider value + 1), or division by 1 to 256.
 *
 * \note
 * Call \ref SystemCoreClockUpdate after this function calling.
+*
+* \note
+* This API is available for CAT1A & CAT1C devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkSlowSetDivider
@@ -4159,6 +5791,9 @@ void Cy_SysClk_ClkSlowSetDivider(uint8_t divider);
 * \return The divider value.
 * The integer division done is by (divider value + 1), or division by 1 to 256.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkSlowSetDivider
 *
@@ -4174,15 +5809,81 @@ uint8_t Cy_SysClk_ClkSlowGetDivider(void);
 *
 * \return The frequency, in Hz.
 *
+* \note
+* This API is available for CAT1A & CAT1C devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkSlowSetDivider
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkSlowGetFrequency(void);
 
+#endif
 
 /** \} group_sysclk_clk_slow_funcs */
 
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_DOXYGEN)
+
+/* ========================================================================== */
+/* =========================    clk_mem SECTION    ========================= */
+/* ========================================================================== */
+/**
+* \addtogroup group_sysclk_clk_mem_funcs
+* \{
+*/
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkMemSetDivider
+****************************************************************************//**
+*
+* Sets the clock divider for the Mem clock. The source of this clock is clkHf[0].
+*
+* \param divider Divider value between 0 and 255.
+* Causes integer division of (divider value + 1), or division by 1 to 256.
+*
+* \note
+* Call \ref SystemCoreClockUpdate after this function calling.
+*
+* \note
+* This API is available for only CAT1C devices.
+*
+*******************************************************************************/
+void Cy_SysClk_ClkMemSetDivider(uint8_t divider);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkMemGetDivider
+****************************************************************************//**
+*
+* Reports the divider value for the Mem clock.
+*
+* \return The divider value.
+* The integer division done is by (divider value + 1), or division by 1 to 256.
+*
+* \note
+* This API is available for only CAT1C devices.
+*
+*******************************************************************************/
+uint8_t Cy_SysClk_ClkMemGetDivider(void);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkMemGetFrequency
+****************************************************************************//**
+*
+* Reports the frequency of the Mem clock.
+*
+* \return The frequency, in Hz.
+*
+* \note
+* This API is available for only CAT1C devices.
+*
+*******************************************************************************/
+uint32_t Cy_SysClk_ClkMemGetFrequency(void);
+
+#endif /* (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) */
+
+/** \} group_sysclk_clk_mem_funcs */
 
 /* ========================================================================== */
 /* ===========================    clkLf SECTION    ========================== */
@@ -4195,32 +5896,32 @@ uint32_t Cy_SysClk_ClkSlowGetFrequency(void);
 * Low frequency (clkLf) input sources. See CLK_SELECT register, LFCLK_SEL bits.
 * Used with functions \ref Cy_SysClk_ClkLfSetSource, and \ref Cy_SysClk_ClkLfGetSource.
 */
+#if defined (CY_IP_MXS22SRSS)
+typedef enum
+{
+    CY_SYSCLK_CLKLF_IN_PILO              = 0U, /**< clkLf is sourced by the precision low speed oscillator (PILO) */
+    CY_SYSCLK_CLKLF_IN_WCO               = 1U, /**< clkLf is sourced by the watch crystal oscillator (WCO) */
+    CY_SYSCLK_CLKLF_IN_ALTLF             = 2U, /**< clkLf is sourced by the Alternate Low Frequency Clock (ALTLF) */
+    CY_SYSCLK_CLKLF_IN_ECO_PRESCALER     = 3U, /**< clkLf is sourced by the External Clock Oscillator (ECO Prescaler) */
+    CY_SYSCLK_CLKLF_IN_ILO               = 4U, /**< clkLf is sourced by the internal low speed oscillator (ILO) */
+    CY_SYSCLK_CLKLF_IN_MAX               = 5U  /**< clkLf MAX value*/
+} cy_en_clklf_in_sources_t;
+
+#else
 typedef enum
 {
     CY_SYSCLK_CLKLF_IN_ILO               = 0U, /**< clkLf is sourced by the internal low speed oscillator (ILO) */
     CY_SYSCLK_CLKLF_IN_WCO               = 1U, /**< clkLf is sourced by the watch crystal oscillator (WCO) */
     CY_SYSCLK_CLKLF_IN_ALTLF             = 2U, /**< clkLf is sourced by the Alternate Low Frequency Clock (ALTLF) */
-    CY_SYSCLK_CLKLF_IN_PILO              = 3U,  /**< clkLf is sourced by the precision low speed oscillator (PILO) */
-
-#if defined (CY_IP_MXS28SRSS)
-    /**
-    * \note
-    * This paramter is available for CAT1B devices.
-    **/
-    CY_SYSCLK_CLKLF_IN_ILO1               = 4U, /**< clkLf is sourced by the internal low speed oscillator (ILO1), not present */
-    /**
-    * \note
-    * This paramter is available for CAT1B devices.
-    **/
-    CY_SYSCLK_CLKLF_IN_ECO_PRESCALER    = 5U,  /**< clkLf is sourced by the External Clock Oscillator (ECO Prescaler) */
-    /**
-    * \note
-    * This paramter is available for CAT1B devices.
-    **/
-    CY_SYSCLK_CLKLF_IN_LPECO_PRESCALER    = 6U  /**< clkLf is sourced by the External Clock Oscillator (LP ECO Prescaler), not present */
-#endif /* CY_IP_MXS28SRSS */
-
+    CY_SYSCLK_CLKLF_IN_PILO              = 3U, /**< clkLf is sourced by the precision low speed oscillator (PILO) */
+    CY_SYSCLK_CLKLF_IN_ILO1              = 4U, /**< clkLf is sourced by the internal low speed oscillator (ILO1)*/
+    CY_SYSCLK_CLKLF_IN_ECO_PRESCALER     = 5U, /**< clkLf is sourced by the External Clock Oscillator (ECO Prescaler) */
+    CY_SYSCLK_CLKLF_IN_LPECO_PRESCALER   = 6U, /**< clkLf is sourced by the External Clock Oscillator (LP ECO Prescaler) */
+    CY_SYSCLK_CLKLF_IN_MAX               = 7U  /**< clkLf MAX value*/
 } cy_en_clklf_in_sources_t;
+
+#endif /* defined (CY_IP_MXS22SRSS) */
+
 /** \} group_sysclk_clk_lf_enums */
 
 /**
@@ -4236,6 +5937,9 @@ typedef enum
 * \param source \ref cy_en_clklf_in_sources_t
 *
 * \note The watchdog timer (WDT) must be unlocked before calling this function.
+*
+* \note  It takes four cycles of the originally selected clock to switch away
+* from it.  Do not disable the original clock during this time.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkLfSetSource
@@ -4263,6 +5967,8 @@ cy_en_clklf_in_sources_t Cy_SysClk_ClkLfGetSource(void);
 /* ========================================================================== */
 /* ========================    clk_timer SECTION    ========================= */
 /* ========================================================================== */
+#if (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) || defined (CY_DOXYGEN)
+
 /**
 * \addtogroup group_sysclk_clk_timer_enums
 * \{
@@ -4292,7 +5998,6 @@ typedef enum
 * \{
 */
 
-
 /*******************************************************************************
 * Function Name: Cy_SysClk_ClkTimerSetSource
 ****************************************************************************//**
@@ -4302,6 +6007,9 @@ typedef enum
 * profiler counters.
 *
 * \param source \ref cy_en_clktimer_in_sources_t
+*
+* \note
+* This API is available for CAT1A devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerSetSource
@@ -4317,6 +6025,9 @@ void Cy_SysClk_ClkTimerSetSource(cy_en_clktimer_in_sources_t source);
 * Reports the source for the timer clock (clk_timer).
 *
 * \return \ref cy_en_clktimer_in_sources_t
+*
+* \note
+* This API is available for CAT1A devices.
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerSetSource
@@ -4337,6 +6048,9 @@ cy_en_clktimer_in_sources_t Cy_SysClk_ClkTimerGetSource(void);
 * \note
 * Do not change the divider value while the timer clock is enabled.
 *
+* \note
+* This API is available for CAT1A devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerSetDivider
 *
@@ -4352,6 +6066,9 @@ void Cy_SysClk_ClkTimerSetDivider(uint8_t divider);
 *
 * \return The divider value
 *
+* \note
+* This API is available for CAT1A devices.
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerSetDivider
 *
@@ -4366,11 +6083,31 @@ uint8_t Cy_SysClk_ClkTimerGetDivider(void);
 * Enables the timer clock (clk_timer). The timer clock can be used as a source
 * for SYSTICK and one or more of the energy profiler counters.
 *
+* \note
+* This API is available for CAT1A devices.
+*
+*
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerEnable
 *
 *******************************************************************************/
 void Cy_SysClk_ClkTimerEnable(void);
+
+
+/*******************************************************************************
+* Function Name: Cy_SysClk_ClkTimerDisable
+****************************************************************************//**
+*
+* Disables the timer clock (clk_timer).
+*
+* \note
+* This API is available for CAT1A devices.
+*
+* \funcusage
+* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerDisable
+*
+*******************************************************************************/
+void Cy_SysClk_ClkTimerDisable(void);
 
 
 /*******************************************************************************
@@ -4392,19 +6129,6 @@ bool Cy_SysClk_ClkTimerIsEnabled(void);
 
 
 /*******************************************************************************
-* Function Name: Cy_SysClk_ClkTimerDisable
-****************************************************************************//**
-*
-* Disables the timer clock (clk_timer).
-*
-* \funcusage
-* \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkTimerDisable
-*
-*******************************************************************************/
-void Cy_SysClk_ClkTimerDisable(void);
-
-
-/*******************************************************************************
 * Function Name: Cy_SysClk_ClkTimerGetFrequency
 ****************************************************************************//**
 *
@@ -4420,10 +6144,13 @@ void Cy_SysClk_ClkTimerDisable(void);
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkTimerGetFrequency(void);
 
+#endif /*(defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION < 3)) */
+
 
 /** \} group_sysclk_clk_timer_funcs */
 
 
+#if defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS40SRSS)
 /* ========================================================================== */
 /* =========================    clk_pump SECTION    ========================= */
 /* ========================================================================== */
@@ -4439,7 +6166,7 @@ uint32_t Cy_SysClk_ClkTimerGetFrequency(void);
 */
 /**
 * \note
-* This enum is available for CAT1A devices.
+* This enum is available for CAT1A, CAT1B and CAT1C devices.
 **/
 typedef enum
 {
@@ -4466,6 +6193,10 @@ typedef enum
 * Used with functions \ref Cy_SysClk_ClkPumpSetDivider, and
 * \ref Cy_SysClk_ClkPumpGetDivider.
 */
+/**
+* \note
+* This enum is available for CAT1A, CAT1B and CAT1C devices.
+**/
 typedef enum
 {
     CY_SYSCLK_PUMP_NO_DIV = 0U, /**< No division on pump clock */
@@ -4503,6 +6234,9 @@ typedef enum
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpSetSource
 *
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
+*
 *******************************************************************************/
 void Cy_SysClk_ClkPumpSetSource(cy_en_clkpump_in_sources_t source);
 
@@ -4517,6 +6251,9 @@ void Cy_SysClk_ClkPumpSetSource(cy_en_clkpump_in_sources_t source);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpSetSource
+*
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
 *
 *******************************************************************************/
 cy_en_clkpump_in_sources_t Cy_SysClk_ClkPumpGetSource(void);
@@ -4536,6 +6273,9 @@ cy_en_clkpump_in_sources_t Cy_SysClk_ClkPumpGetSource(void);
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpSetDivider
 *
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
+*
 *******************************************************************************/
 void Cy_SysClk_ClkPumpSetDivider(cy_en_clkpump_divide_t divider);
 
@@ -4551,6 +6291,9 @@ void Cy_SysClk_ClkPumpSetDivider(cy_en_clkpump_divide_t divider);
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpSetDivider
 *
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
+*
 *******************************************************************************/
 cy_en_clkpump_divide_t Cy_SysClk_ClkPumpGetDivider(void);
 
@@ -4564,6 +6307,9 @@ cy_en_clkpump_divide_t Cy_SysClk_ClkPumpGetDivider(void);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpEnable
+*
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
 *
 *******************************************************************************/
 void Cy_SysClk_ClkPumpEnable(void);
@@ -4581,7 +6327,7 @@ void Cy_SysClk_ClkPumpEnable(void);
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpDisable
 *
 * \note
-* This API is available for CAT1A devices.
+* This API is available for CAT1A, CAT1B and CAT1C devices.
 *
 *******************************************************************************/
 bool Cy_SysClk_ClkPumpIsEnabled(void);
@@ -4595,6 +6341,9 @@ bool Cy_SysClk_ClkPumpIsEnabled(void);
 *
 * \funcusage
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpDisable
+*
+* \note
+* This API is available for CAT1A, CAT1B and CAT1C devices.
 *
 *******************************************************************************/
 void Cy_SysClk_ClkPumpDisable(void);
@@ -4611,12 +6360,12 @@ void Cy_SysClk_ClkPumpDisable(void);
 * \snippet sysclk/snippet/main.c snippet_Cy_SysClk_ClkPumpEnable
 *
 * \note
-* This API is available for CAT1A devices.
+* This API is available for CAT1A, CAT1B and CAT1C devices.
 *
 *******************************************************************************/
 uint32_t Cy_SysClk_ClkPumpGetFrequency(void);
 /** \} group_sysclk_clk_pump_funcs */
-
+#endif /* defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS40SRSS) */
 
 /* ========================================================================== */
 /* ==========================    clk_bak SECTION    ========================= */
@@ -4630,31 +6379,14 @@ uint32_t Cy_SysClk_ClkPumpGetFrequency(void);
 * CLK_SEL bits. Used with functions \ref Cy_SysClk_ClkBakSetSource, and
 * \ref Cy_SysClk_ClkBakGetSource.
 */
-/**
-* \note
-* THis enum is available for CAT1A devices.
-**/
 typedef enum
 {
     CY_SYSCLK_BAK_IN_WCO,   /**< Backup domain clock input is WCO */
-
-#if defined (CY_IP_MXS40SRSS)
+    CY_SYSCLK_BAK_IN_CLKLF,  /**< Backup domain clock input is clkLf */
+#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS) || (defined (CY_IP_MXS40SRSS) && (CY_IP_MXS40SRSS_VERSION >= 3)) || defined (CY_IP_MXS22SRSS)
     /**
     * \note
-    * This parameter is available for CAT1A devices.
-    **/
-    CY_SYSCLK_BAK_IN_CLKLF  /**< Backup domain clock input is clkLf */
-#endif /* CY_IP_MXS40SRSS */
-
-#if defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SSRSS)
-    /**
-    * \note
-    * This parameter is available for CAT1B devices.
-    **/
-    CY_SYSCLK_BAK_IN_ALTBAK,            /**< Backup domain clock input is ALTBAK */
-    /**
-    * \note
-    * This parameter is available for CAT1B devices.
+    * This parameter is available for CAT1B and CAT1C devices.
     **/
     CY_SYSCLK_BAK_IN_ILO,               /**< Backup domain clock input is ILO */
     /**
@@ -4667,7 +6399,7 @@ typedef enum
     * This parameter is available for CAT1B devices.
     **/
     CY_SYSCLK_BAK_IN_PILO               /**< Backup domain clock input is PILO */
-#endif /* CY_IP_MXS28SRSS */
+#endif /* CY_IP_MXS28SRSS, CY_IP_MXS40SSRSS  */
 
 } cy_en_clkbak_in_sources_t;
 /** \} group_sysclk_clk_bak_enums */
@@ -4724,7 +6456,7 @@ cy_en_clkbak_in_sources_t Cy_SysClk_ClkBakGetSource(void);
 }
 #endif /* __cplusplus */
 
-#endif /* CY_IP_MXS28SRSS */
+#endif /* defined (CY_IP_MXS28SRSS) || defined (CY_IP_MXS40SRSS) || defined (CY_IP_MXS40SSRSS) || defined (CY_IP_MXS22SRSS) */
 
 #endif /* CY_SYSCLK_H */
 

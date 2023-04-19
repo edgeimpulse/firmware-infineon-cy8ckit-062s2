@@ -7,7 +7,7 @@
 #
 ################################################################################
 # \copyright
-# Copyright 2018-2020 Cypress Semiconductor Corporation
+# Copyright 2018-2022, Cypress Semiconductor Corporation (an Infineon company)
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,17 +28,25 @@
 # Basic Configuration
 ################################################################################
 
+# Type of ModusToolbox Makefile Options include:
+#
+# COMBINED    -- Top Level Makefile usually for single standalone application
+# APPLICATION -- Top Level Makefile usually for multi project application
+# PROJECT     -- Project Makefile under Application
+#
+MTB_TYPE=COMBINED
+
 # Target board/hardware (BSP).
-# To change the target, it is recommended to use the Library manager 
-# ('make modlibs' from command line), which will also update Eclipse IDE launch 
-# configurations. If TARGET is manually edited, ensure TARGET_<BSP>.mtb with a 
+# To change the target, it is recommended to use the Library manager
+# ('make modlibs' from command line), which will also update Eclipse IDE launch
+# configurations. If TARGET is manually edited, ensure TARGET_<BSP>.mtb with a
 # valid URL exists in the application, run 'make getlibs' to fetch BSP contents
 # and update or regenerate launch configurations for your IDE.
-TARGET=CY8CKIT-062S2-43012
+TARGET=APP_CY8CKIT-062S2-43012
 
 # Name of application (used to derive name of final linked file).
-# 
-# If APPNAME is edited, ensure to update or regenerate launch 
+#
+# If APPNAME is edited, ensure to update or regenerate launch
 # configurations for your IDE.
 APPNAME=firmware-infineon-cy8ckit-062s2
 
@@ -56,8 +64,8 @@ TOOLCHAIN=GCC_ARM
 # Debug -- build with minimal optimizations, focus on debugging.
 # Release -- build with full optimizations
 # Custom -- build with custom configuration, set the optimization flag in CFLAGS
-# 
-# If CONFIG is manually edited, ensure to update or regenerate launch configurations 
+#
+# If CONFIG is manually edited, ensure to update or regenerate launch configurations
 # for your IDE.
 CONFIG=Debug
 
@@ -92,23 +100,21 @@ SOURCES=
 
 # Like SOURCES, but for include directories. Value should be paths to
 # directories (without a leading -I).
-INCLUDE=ei-model/
+INCLUDES=ei-model/
 
 # Add additional defines to the build process (without a leading -D).
 DEFINES=
-DEFINES += __STACK_SIZE=0x20000
-DEFINES += TF_LITE_DISABLE_X86_NEON=1
-#DEFINES += EIDSP_SIGNAL_C_FN_POINTER=1
-#DEFINES += EI_C_LINKAGE=1
-DEFINES += EI_PORTING_INFINEONPSOC62=1
-DEFINES += EI_SENSOR_AQ_STREAM=FILE
-DEFINES += EIDSP_USE_CMSIS_DSP
-DEFINES += EIDSP_QUANTIZE_FILTERBANK=0
-#DEFINES += NDEBUG
-DEFINES += EI_CLASSIFIER_TFLITE_ENABLE_CMSIS_NN
-DEFINES += ARM_MATH_LOOPUNROLL
-DEFINES += EIDSP_LOAD_CMSIS_DSP_SOURCES=1
 DEFINES += CY_RETARGET_IO_CONVERT_LF_TO_CRLF
+DEFINES += ARM_MATH_LOOPUNROLL
+DEFINES += NDEBUG
+DEFINES += TF_LITE_DISABLE_X86_NEON=1
+DEFINES += EI_PORTING_INFINEONPSOC62=1
+DEFINES += EIDSP_USE_CMSIS_DSP=1
+DEFINES += EIDSP_QUANTIZE_FILTERBANK=0
+DEFINES += EI_CLASSIFIER_TFLITE_ENABLE_CMSIS_NN=1
+DEFINES += EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES=1
+DEFINES += EIDSP_LOAD_CMSIS_DSP_SOURCES=1
+DEFINES += EI_SENSOR_AQ_STREAM=FILE
 
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
@@ -135,6 +141,7 @@ CXXFLAGS=
 ASFLAGS=
 
 # Additional / custom linker flags.
+LDFLAGS=
 # nano.specs is already enabled by the ModusToolbox SDK
 #LDFLAGS= -specs=nano.specs
 LDFLAGS += -specs=nosys.specs
@@ -146,7 +153,7 @@ LDLIBS=
 LINKER_SCRIPT=
 
 # Custom pre-build commands to run.
-PREBUILD=/bin/bash fix-sdk-cc-files.sh
+PREBUILD=
 
 # Custom post-build commands to run.
 POSTBUILD=
@@ -163,9 +170,9 @@ CY_APP_PATH=
 
 # Relative path to the shared repo location.
 #
-# All .mtb files have the format, <URI>#<COMMIT>#<LOCATION>. If the <LOCATION> field 
-# begins with $$ASSET_REPO$$, then the repo is deposited in the path specified by 
-# the CY_GETLIBS_SHARED_PATH variable. The default location is one directory level 
+# All .mtb files have the format, <URI>#<COMMIT>#<LOCATION>. If the <LOCATION> field
+# begins with $$ASSET_REPO$$, then the repo is deposited in the path specified by
+# the CY_GETLIBS_SHARED_PATH variable. The default location is one directory level
 # above the current app directory.
 # This is used with CY_GETLIBS_SHARED_NAME variable, which specifies the directory name.
 CY_GETLIBS_SHARED_PATH=../

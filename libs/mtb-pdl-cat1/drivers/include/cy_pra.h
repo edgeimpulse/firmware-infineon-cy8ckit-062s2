@@ -1,13 +1,14 @@
 /***************************************************************************//**
 * \file cy_pra.h
-* \version 2.30
+* \version 2.40
 *
 * \brief The header file of the PRA driver. The API is not intended to
 * be used directly by the user application.
 *
 ********************************************************************************
 * \copyright
-* Copyright 2020 Cypress Semiconductor Corporation
+* Copyright (c) (2020-2022), Cypress Semiconductor Corporation
+* (an Infineon company) or an affiliate of Cypress Semiconductor Corporation.
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -228,6 +229,12 @@
 * <table class="doxtable">
 *   <tr><th>Version</th><th>Changes</th><th>Reason for Change</th></tr>
 *   <tr>
+*     <td>2.40</td>
+*     <td>Initialize internal data structure to initial values when external
+*         clock policy pointer is NULL to avoid null pointer de-referencing.</td>
+*     <td>Defect fix.</td>
+*   </tr>
+*   <tr>
 *     <td rowspan="4">2.30</td>
 *     <td>System Configuration can be done from CM0+ using PRA API with
 *         CY_PRA_MSG_TYPE_SYS_CFG_FUNC and CY_PRA_FUNC_INIT_CYCFG_DEVICE arguments.</td>
@@ -235,7 +242,7 @@
 *   </tr>
 *   <tr>
 *     <td>System configuration structure is updated with appropriate value, when
-*         cm0+ applicaton calls any PDL API accessing to FUNCTION_POLICY registers.</td>
+*         cm0+ application calls any PDL API accessing to FUNCTION_POLICY registers.</td>
 *     <td>Enhancement based on customer feedback.</td>
 *   </tr>
 *   <tr>
@@ -371,7 +378,7 @@ extern "C" {
 #define CY_PRA_INDX_SRSS_SRSS_INTR_MASK         (3U)
 #define CY_PRA_INDX_SRSS_SRSS_INTR_CFG          (4U)
 #define CY_PRA_INDX_SRSS_CLK_ROOT_SELECT_1      (5U)
-/* Do not change the index below abecause it is used in flash loaders */
+/* Do not change the index below because it is used in flash loaders */
 #define CY_PRA_INDX_SRSS_CLK_ROOT_SELECT_2      (6U)
 #define CY_PRA_INDX_SRSS_CLK_ROOT_SELECT_3      (7U)
 #define CY_PRA_INDX_SRSS_CLK_ROOT_SELECT_4      (8U)
@@ -524,7 +531,7 @@ extern "C" {
 #define CY_PRA_DRV_VERSION_MAJOR       2
 
 /** Driver minor version */
-#define CY_PRA_DRV_VERSION_MINOR       30
+#define CY_PRA_DRV_VERSION_MINOR       40
 
 /** Protected Register Access driver ID */
 #define CY_PRA_ID                       (CY_PDL_DRV_ID(0x46U))
