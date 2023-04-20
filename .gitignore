@@ -155,8 +155,3 @@ Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 [Dd]esktop.ini
-
-# Edge Imnpulse SDKs
-ei-model/edge-impulse-sdk/
-# TODO: remove after upstreaming FW SDK
-# firmware-sdk/
