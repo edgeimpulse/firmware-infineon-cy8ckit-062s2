@@ -75,18 +75,6 @@ bool samples_callback(const void *raw_sample, uint32_t raw_sample_size)
     return false;
 }
 
-static void display_results(ei_impulse_result_t* result)
-{
-    ei_printf("Predictions (DSP: %d ms., Classification: %d ms., Anomaly: %d ms.): \n",
-        result->timing.dsp, result->timing.classification, result->timing.anomaly);
-    for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
-        ei_printf("    %s: \t%f\r\n", result->classification[ix].label, result->classification[ix].value);
-    }
-#if EI_CLASSIFIER_HAS_ANOMALY == 1
-    ei_printf("    anomaly score: %f\r\n", result->anomaly);
-#endif
-}
-
 void ei_run_impulse(void)
 {
     EiDeviceInfo *dev = EiDeviceInfo::get_device();
@@ -206,7 +194,7 @@ void ei_start_impulse(bool continuous, bool debug, bool use_max_uart_speed)
     }
 }
 
-void ei_stop_impulse(void) 
+void ei_stop_impulse(void)
 {
     EiDeviceInfo *dev = EiDeviceInfo::get_device();
 
